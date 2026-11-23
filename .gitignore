@@ -1,0 +1,32 @@
+# Fauna Quest — .gitignore
+
+# OS
+Thumbs.db
+.DS_Store
+ehthumbs.db
+Icon?
+
+# IDE / editor
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# PHP
+*.php.bak
+vendor/
+composer.lock
+
+# Build / cache
+*.log
+cache/
+tmp/
+temp/
+
+# Environment
+.env
+.env.*
+
+
+design-reference

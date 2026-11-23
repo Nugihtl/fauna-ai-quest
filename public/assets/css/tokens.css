@@ -1,0 +1,201 @@
+/* ==========================================================================
+   Fauna Quest — Design System Tokens
+   Warna diambil dari design-reference/color pallete.pdf.
+   Setiap kelompok warna diberi nama tetap (navy / blue / cyan / red /
+   green / neutral / yellow) untuk menghindari ambiguitas karena beberapa
+   kelompok pada Figma sama-sama bernama "Blue".
+   ========================================================================== */
+
+/* Nunito — font resmi Design System Fauna Quest.
+   File font tersedia secara lokal di public/assets/fonts/ (bukan CDN).
+   Hanya TTF yang tersedia pada repositori ini; WOFF2 belum tersedia.
+   @font-face dimuat dari file lokal, tidak ada permintaan jaringan eksternal. */
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- Navy / Blue utama ---- */
+  --navy-50: #e7ecef;
+  --navy-75: #9bafbf;
+  --navy-100: #718ea4;
+  --navy-200: #345e7d;
+  --navy-300: #0b3d62;
+  --navy-400: #082b45;
+  --navy-500: #07253c;
+
+  /* ---- Blue / Cyan ---- */
+  --blue-50: #e7f3f7;
+  --blue-75: #9dcfdf;
+  --blue-100: #75bbd2;
+  --blue-200: #399ebf;
+  --blue-300: #118ab2;
+  --blue-400: #0c617d;
+  --blue-500: #0a546d;
+
+  /* ---- Light Cyan ---- */
+  --cyan-50: #f0fbfd;
+  --cyan-75: #c3edf6;
+  --cyan-100: #aae5f2;
+  --cyan-200: #86daec;
+  --cyan-300: #6dd3e8;
+  --cyan-400: #4c94a2;
+  --cyan-500: #42818e;
+
+  /* ---- Red ---- */
+  --red-50: #fbeaea;
+  --red-75: #f0a8a8;
+  --red-100: #ea8484;
+  --red-200: #e04f4f;
+  --red-300: #da2b2b;
+  --red-400: #991e1e;
+  --red-500: #851a1a;
+
+  /* ---- Green ---- */
+  --green-50: #eaf2eb;
+  --green-75: #a9caab;
+  --green-100: #86b488;
+  --green-200: #529355;
+  --green-300: #2e7d32;
+  --green-400: #205823;
+  --green-500: #1c4c1f;
+
+  /* ---- Neutral / White ---- */
+  --neutral-50: #fefeff;
+  --neutral-75: #fafdff;
+  --neutral-100: #f9fcff;
+  --neutral-200: #f6faff;
+  --neutral-300: #f4f9ff;
+  --neutral-400: #abaeb3;
+  --neutral-500: #95989c;
+
+  /* ---- Yellow ---- */
+  --yellow-50: #fffaf0;
+  --yellow-75: #ffecc0;
+  --yellow-100: #ffe4a6;
+  --yellow-200: #ffd980;
+  --yellow-300: #ffd166;
+  --yellow-400: #b39247;
+  --yellow-500: #9c7f3e;
+
+  /* ========================================================================
+     Semantik warna (peta ke token di atas, jangan buat warna baru)
+     ======================================================================== */
+  --color-bg-body: var(--neutral-50);
+  --color-surface: var(--neutral-50);
+  --color-surface-light: var(--cyan-50);
+
+  --color-brand: var(--navy-300);
+  --color-brand-hover: var(--navy-200);
+  --color-brand-active: var(--navy-400);
+
+  --color-primary: var(--blue-100);
+  --color-primary-hover: var(--blue-200);
+  --color-primary-active: var(--blue-300);
+  --color-primary-inverse: var(--neutral-50);
+
+  --color-text-primary: var(--navy-400);
+  --color-text-secondary: var(--navy-200);
+  --color-text-muted: var(--neutral-400);
+  --color-text-on-brand: var(--neutral-50);
+
+  --color-border: var(--navy-75);
+  --color-border-light: var(--blue-50);
+
+  --color-success: var(--green-300);
+  --color-success-bg: var(--green-50);
+
+  --color-danger: var(--red-300);
+  --color-danger-bg: var(--red-50);
+
+  --color-warning: var(--yellow-300);
+  --color-warning-bg: var(--yellow-50);
+
+  /* ========================================================================
+     Typography (hierarki dari design-reference/komponen utama.pdf)
+     ======================================================================== */
+  --font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --text-heading: 32px;      /* Heading */
+  --text-heading-h1: 24px;   /* Heading/H1 */
+  --text-heading-h2: 20px;   /* Heading/H2 */
+  --text-body-large: 16px;   /* Body/large */
+  --text-body-default: 14px; /* Body/default */
+  --text-caption: 12px;      /* Caption */
+  --text-button: 17px;       /* Tombol (Mulai Misi, Lanjut, Kembali) */
+
+  --line-heading: 1.2;
+  --line-body: 1.5;
+  --line-tight: 1.25;
+
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ========================================================================
+     Layout & radius
+     ======================================================================== */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px rgba(8, 43, 69, 0.06);
+  --shadow-md: 0 4px 12px rgba(8, 43, 69, 0.10);
+  --shadow-lg: 0 8px 24px rgba(8, 43, 69, 0.14);
+
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+html {
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  font-size: var(--text-body-default);
+  line-height: var(--line-body);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
