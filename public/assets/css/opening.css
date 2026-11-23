@@ -212,7 +212,7 @@ button {
   width: 277px;
 }
 
-/* ===== Panel sambutan ===== */
+/* ===== Panel sambutan — persis sesuai referensi ===== */
 .panel {
   position: absolute;
   background: var(--panel);

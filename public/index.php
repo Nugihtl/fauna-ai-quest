@@ -45,7 +45,6 @@
           <div class="welcome-body">
             <h2>Yuk, bantu Fauna AI mengenali dunia hewan!</h2>
             <p>Bantu Fauna AI mengelompokkan hewan vertebrata. Amati gambar, berikan label, dan lihat bagaimana contoh yang kamu pilih memengaruhi hasil klasifikasi.</p>
-            <p>Baca instruksi dengan saksama, amati karakteristik hewan, lalu pilih jawaban atau kelompokkan gambar sesuai mode permainan.</p>
           </div>
         </article>
         <img class="robot robot-welcome" src="assets/images/mascot/fauna.png" alt="Maskot Fauna AI">
