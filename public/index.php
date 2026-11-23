@@ -11,107 +11,91 @@
   <link rel="stylesheet" href="assets/css/opening.css">
 </head>
 <body>
-  <div class="app">
-    <div class="app__wrap">
-      <header class="header">
-        <a class="header__brand" href="#" aria-label="Beranda Fauna AI Quest">
-          <img class="header__logo" src="assets/images/icons/logo.svg" alt="Logo Fauna AI Quest">
-          <span class="header__wordmark">FAUNA AI QUEST</span>
-        </a>
+  <div class="viewport" id="viewport">
+    <div class="stage" id="stage" data-screen="intro">
 
-        <div class="header__progress" aria-label="Progress misi">
-          <span class="progress__step" id="step-1" data-step="1" aria-current="step">1</span>
-          <span class="progress__step" data-step="2">2</span>
-          <span class="progress__step" data-step="3">3</span>
-          <span class="progress__step" data-step="4">4</span>
-          <span class="progress__step" data-step="5">5</span>
-          <span class="progress__step" data-step="6">6</span>
-          <span class="progress__step" data-step="7">7</span>
-          <span class="progress__step" data-step="8">8</span>
-          <span class="progress__step" data-step="9">9</span>
+      <!-- Latar pemandangan (aset Figma resmi, PNG dari repo) -->
+      <img class="scene-bg" src="assets/images/background/landscape.png" alt="Latar pemandangan" aria-hidden="true">
+
+      <!-- ============ HEADER ============ -->
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-logo" src="assets/images/icons/logo.svg" alt="Logo Fauna AI Quest">
+          <span class="brand-name">FAUNA AI QUEST</span>
         </div>
 
-        <div class="header__actions">
-          <button class="btn-ghost" id="btn-exit" type="button" aria-label="Keluar Misi">Keluar Misi</button>
-        </div>
+        <nav class="stepper" id="stepper" aria-label="Progres misi"></nav>
+
+        <button class="btn-exit" id="btnExit" type="button">Keluar Misi</button>
       </header>
 
-      <main class="views">
+      <!-- ============ LAYAR 1: INTRO (latar saja) ============ -->
+      <section class="screen" id="screen-intro" aria-hidden="true">
+        <div class="intro-content">
+          <h1 class="intro-title">Fauna AI Quest</h1>
+          <p class="intro-sub">Mulai misi mengenali dunia hewan vertebrata.</p>
+          <button class="btn-start btn-start-intro" id="btnStart" type="button">Mulai Misi</button>
+        </div>
+      </section>
 
-        <!-- Tampilan 1 — Opening / halaman awal -->
-        <section class="view view--active" id="view-1" aria-labelledby="view-1-title" role="region">
-          <div class="opening">
-            <h1 class="opening__title" id="view-1-title">Fauna AI Quest</h1>
-            <p class="opening__subtitle">Mulai misi mengenali dunia hewan vertebrata.</p>
-            <button class="btn-primary" id="btn-start" type="button">Mulai Misi</button>
+      <!-- ============ LAYAR 2: SELAMAT DATANG ============ -->
+      <section class="screen" id="screen-welcome" aria-labelledby="welcomeTitle" aria-hidden="true">
+        <article class="panel welcome-panel">
+          <h1 id="welcomeTitle">Selamat Datang di Misi Fauna AI!</h1>
+          <div class="instruction">
+            <span class="instruction-label">PETUNJUK AKTIVITAS</span>
+            <p>Baca instruksi dengan saksama, amati karakteristik hewan, lalu pilih jawaban atau kelompokkan gambar sesuai mode permainan.</p>
           </div>
-        </section>
-
-        <!-- Tampilan 2 — Selamat datang dan petunjuk aktivitas -->
-        <section class="view" id="view-2" aria-labelledby="view-2-title" role="region" aria-hidden="true">
-          <div class="welcome">
-            <img class="welcome__mascot" src="assets/images/mascot/fauna.png" alt="Maskot Fauna AI" width="320" height="480">
-
-            <div class="welcome__panel">
-              <span class="welcome__kicker">Petunjuk aktivitas</span>
-              <h2 class="welcome__title" id="view-2-title">Selamat Datang di Misi Fauna AI!</h2>
-              <p class="welcome__lead">Yuk, bantu Fauna AI mengenali dunia hewan!</p>
-              <p class="welcome__desc">
-                Bantu Fauna AI mengelompokkan hewan vertebrata. Amati gambar, berikan label, dan lihat
-                bagaimana contoh yang kamu pilih memengaruhi hasil klasifikasi.
-              </p>
-              <p class="welcome__desc">
-                Baca instruksi dengan saksama, amati karakteristik hewan, lalu pilih jawaban atau
-                kelompokkan gambar sesuai mode permainan.
-              </p>
-              <div class="welcome__actions">
-                <button class="btn-ghost" id="btn-back-1" type="button">Kembali</button>
-                <button class="btn-primary" id="btn-continue" type="button">Lanjut</button>
-              </div>
-            </div>
+          <div class="welcome-body">
+            <h2>Yuk, bantu Fauna AI mengenali dunia hewan!</h2>
+            <p>Bantu Fauna AI mengelompokkan hewan vertebrata. Amati gambar, berikan label, dan lihat bagaimana contoh yang kamu pilih memengaruhi hasil klasifikasi.</p>
+            <p>Baca instruksi dengan saksama, amati karakteristik hewan, lalu pilih jawaban atau kelompokkan gambar sesuai mode permainan.</p>
           </div>
-        </section>
+        </article>
+        <img class="robot robot-welcome" src="assets/images/mascot/fauna.png" alt="Maskot Fauna AI">
+        <button class="btn-start btn-start-welcome" id="btnContinue" type="button">Lanjut</button>
+        <button class="btn-back btn-back-welcome" id="btnBackWelcome" type="button">Kembali</button>
+      </section>
 
-        <!-- Tampilan 3 — Pemilihan mode permainan -->
-        <section class="view" id="view-3" aria-labelledby="view-3-title" role="region" aria-hidden="true">
-          <div class="mode">
-            <img class="mode__mascot" src="assets/images/mascot/fauna.png" alt="Maskot Fauna AI" width="260" height="390">
-            <div>
-              <p class="mode__dialog" id="view-3-title">Pilih Mode Permainanmu!</p>
-              <p class="mode__dialog-sub">Pilih salah satu cara kamu ingin mengenali hewan vertebrata.</p>
-            </div>
+      <!-- ============ LAYAR 3: PILIH MODE ============ -->
+      <section class="screen" id="screen-mode" aria-labelledby="modeTitle" aria-hidden="true">
+        <img class="robot robot-mode" src="assets/images/mascot/fauna.png" alt="Maskot Fauna AI">
 
-            <div class="mode__cards">
-              <!-- Kartu Binary -->
-              <article class="mode__card" id="card-binary" data-mode="binary">
-                <div class="mode__illustration" aria-hidden="true"></div>
-                <h3 class="mode__card-title">Binary</h3>
-                <p class="mode__card-desc">Tentukan apakah hewan yang ditampilkan termasuk kelas yang dipilih atau bukan.</p>
-                <div class="mode__select-badge" aria-hidden="true">
-                  <span aria-hidden="true">&#10004;</span> Terpilih
-                </div>
-                <button class="btn-primary" type="button" data-mode="binary">Mulai Misi</button>
-              </article>
+        <div class="bubble">
+          <h2 id="modeTitle">Pilih Mode Permainanmu!</h2>
+          <p>Pilih salah satu cara kamu ingin mengenali hewan vertebrata.</p>
+        </div>
 
-              <!-- Kartu Kelompokkan -->
-              <article class="mode__card" id="card-kelompokkan" data-mode="kelompokkan">
-                <div class="mode__illustration" aria-hidden="true"></div>
-                <h3 class="mode__card-title">Kelompokkan</h3>
-                <p class="mode__card-desc">Kelompokkan setiap gambar ke dalam salah satu dari lima kelas vertebrata: Mamalia, Aves, Reptil, Amfibi, atau Pisces.</p>
-                <div class="mode__select-badge" aria-hidden="true">
-                  <span aria-hidden="true">&#10004;</span> Terpilih
-                </div>
-                <button class="btn-primary" type="button" data-mode="kelompokkan">Mulai Misi</button>
-              </article>
-            </div>
-
-            <div class="mode__footer">
-              <button class="btn-ghost" id="btn-back-2" type="button">Kembali</button>
-            </div>
+        <!-- Kartu Binary -->
+        <article class="mode-card mode-binary">
+          <h3 class="pill">Binary</h3>
+          <p class="mode-desc">Tentukan apakah hewan yang ditampilkan termasuk kelas yang dipilih atau bukan.</p>
+          <div class="mode-art mode-art-binary">
+            <img src="assets/images/modes/kucing.webp" alt="Kucing">
+            <span class="vline"></span>
+            <img src="assets/images/modes/camar.webp" alt="Burung camar">
           </div>
-        </section>
+          <div class="mode-select-badge" aria-hidden="true"><span>&#10004;</span> Terpilih</div>
+          <button class="btn-start" type="button" data-mode="binary">Mulai Misi</button>
+        </article>
 
-      </main>
+        <!-- Kartu Kelompokkan -->
+        <article class="mode-card mode-kelompokkan">
+          <h3 class="pill">Kelompokkan</h3>
+          <p class="mode-desc">Kelompokkan setiap gambar ke dalam salah satu dari lima kelas vertebrata: Mamalia, Aves, Reptil, Amfibi, atau Pisces.</p>
+          <div class="mode-art mode-art-kelompokkan">
+            <img src="assets/images/modes/katak.webp" alt="Katak">
+            <img src="assets/images/modes/kudalaut.webp" alt="Kuda laut">
+            <img src="assets/images/modes/pinguin.webp" alt="Pinguin">
+            <img src="assets/images/modes/bunglon.webp" alt="Bunglon">
+          </div>
+          <div class="mode-select-badge" aria-hidden="true"><span>&#10004;</span> Terpilih</div>
+          <button class="btn-start" type="button" data-mode="kelompokkan">Mulai Misi</button>
+        </article>
+
+        <button class="btn-back btn-back-mode" id="btnBackMode" type="button">Kembali</button>
+      </section>
+
     </div>
   </div>
 
@@ -128,7 +112,7 @@
   </div>
 
   <!-- Toast feedback -->
-  <div class="toast" id="toast" aria-live="polite" aria-atomic="true" style="display:none;"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <script src="assets/js/opening.js"></script>
 </body>

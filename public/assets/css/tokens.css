@@ -7,9 +7,7 @@
    ========================================================================== */
 
 /* Nunito — font resmi Design System Fauna Quest.
-   File font tersedia secara lokal di public/assets/fonts/ (bukan CDN).
-   Hanya TTF yang tersedia pada repositori ini; WOFF2 belum tersedia.
-   @font-face dimuat dari file lokal, tidak ada permintaan jaringan eksternal. */
+   File font tersedia secara lokal di public/assets/fonts/ (TTF, bukan CDN). */
 @font-face {
   font-family: "Nunito";
   src: url("../fonts/Nunito-Regular.ttf") format("truetype");
