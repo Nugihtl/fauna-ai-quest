@@ -1,9 +1,3 @@
-/* ==========================================================================
-   Fauna Quest — Opening interaction (vanilla JS)
-   Navigasi antar tiga tampilan Opening + pemilihan mode.
-   State hidup hanya selama sesi (tidak localStorage / backend).
-   ========================================================================== */
-
 (function () {
   "use strict";
 
@@ -12,154 +6,113 @@
   var stepper = document.getElementById("stepper");
   var toast = document.getElementById("toast");
   var screens = {
-    intro: document.getElementById("screen-intro"),
     welcome: document.getElementById("screen-welcome"),
-    mode: document.getElementById("screen-mode"),
+    mode: document.getElementById("screen-mode")
   };
   var current = "intro";
   var toastTimer = null;
-  var selectedMode = null;
+  var exitModal = document.getElementById("modal");
+  var modalCancel = document.getElementById("modal-cancel");
+  var modalOk = document.getElementById("modal-ok");
 
-  /* ---------- Render stepper 1..9 (active / done / connecting lines) ---------- */
+  /* ---------- Skala stage (desain 1440x1024) agar muat di layar apa pun ---------- */
+  function fit() {
+    var w = 1440, h = 1024;
+    var s = Math.min(window.innerWidth / w, window.innerHeight / h);
+    stage.style.transform = "scale(" + s + ")";
+  }
+  window.addEventListener("resize", fit);
+  fit();
+
+  /* ---------- Stepper 1..9 ---------- */
   function renderStepper(active) {
+    if (!stepper) return;
     stepper.innerHTML = "";
     for (var i = 1; i <= TOTAL_STEPS; i++) {
       var el = document.createElement("span");
-      el.className = "step";
-      if (i === active) {
-        el.classList.add("is-active");
-        el.setAttribute("aria-current", "step");
-      } else if (i < active) {
-        el.classList.add("is-done");
-      }
-      el.textContent = i;
+      el.className = "step" + (i === active ? " is-active" : i < active ? " is-done" : "");
+      el.textContent = i < active ? "✓" : i;
+      if (i === active) el.setAttribute("aria-current", "step");
       stepper.appendChild(el);
     }
   }
+  // Expose stepper renderer for binary.js and future modes
+  window.renderFaunaStepper = renderStepper;
 
-  /* ---------- Tampilkan layar (data-screen + is-visible) ---------- */
+  /* ---------- Navigasi antar layar opening ---------- */
   function show(name) {
     current = name;
     stage.dataset.screen = name;
-
     Object.keys(screens).forEach(function (k) {
-      screens[k].classList.toggle("is-visible", k === name);
+      if (screens[k]) {
+        screens[k].classList.toggle("is-visible", k === name);
+        screens[k].classList.toggle("active", k === name);
+      }
     });
-
-    // Update stepper: intro=1, welcome=2, mode=3
     var stepMap = { intro: 1, welcome: 2, mode: 3 };
-    renderStepper(stepMap[name] || 1);
+    if (stepMap[name]) renderStepper(stepMap[name]);
   }
+  window.showFaunaScreen = show;
 
-  /* ---------- Toast feedback ---------- */
   function notify(msg) {
+    if (!toast) return;
     toast.textContent = msg;
     toast.classList.add("is-on");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
-      toast.classList.remove("is-on");
-    }, 2600);
+    toastTimer = setTimeout(function () { toast.classList.remove("is-on"); }, 2600);
   }
 
-  /* ---------- Pemilihan mode ---------- */
-  function selectMode(mode) {
-    selectedMode = mode;
-
-    // Update visual badge pada kartu yang dipilih
-    document.querySelectorAll(".mode-card").forEach(function (card) {
-      var badge = card.querySelector(".mode-select-badge");
-      if (card.dataset.mode === mode) {
-        card.classList.add("mode-card--selected");
-        if (badge) badge.style.display = "inline-flex";
-      } else {
-        card.classList.remove("mode-card--selected");
-        if (badge) badge.style.display = "none";
-      }
-    });
-
-    // Kirim event ke tahap selanjutnya (hook gameplay)
-    document.dispatchEvent(
-      new CustomEvent("fauna:mode", {
-        detail: { mode: mode },
-      })
-    );
-
-    var label = mode === "binary" ? "Binary" : mode === "kelompokkan" ? "Kelompokkan" : mode;
-    notify("Mode " + label + " telah dipilih.");
-  }
-
-  /* ---------- Dialog Keluar Misi (custom, bukan window.confirm) ---------- */
-  var overlay = document.getElementById("overlay-exit");
-  var btnExit = document.getElementById("btnExit");
-  var btnExitCancel = document.getElementById("btn-exit-cancel");
-  var btnExitConfirm = document.getElementById("btn-exit-confirm");
-
-  function openExitDialog() {
-    overlay.classList.add("overlay--open");
-    overlay.removeAttribute("aria-hidden");
-    btnExitCancel.focus();
-  }
-
-  function closeExitDialog() {
-    overlay.classList.remove("overlay--open");
-    overlay.setAttribute("aria-hidden", "true");
-    btnExit.focus();
-  }
-
-  /* ---------- Event listener ---------- */
-  function init() {
-    // Layar 1 (intro): Mulai Misi → welcome (butuh klik, tidak auto)
-    document.getElementById("btnStart").addEventListener("click", function () {
-      show("welcome");
-    });
-
-    // Layar 2 (welcome): Lanjut → mode ; Kembali → intro
-    document.getElementById("btnContinue").addEventListener("click", function () {
+  /* ---------- Event Listeners ---------- */
+  var btnStart = document.getElementById("btnStart");
+  if (btnStart) {
+    btnStart.addEventListener("click", function () {
       show("mode");
     });
-    document.getElementById("btnBackWelcome").addEventListener("click", function () {
-      show("intro");
-    });
-
-    // Layar 3 (mode): Kembali → welcome
-    document.getElementById("btnBackMode").addEventListener("click", function () {
-      show("welcome");
-    });
-
-    // Kartu mode: klik tombol Mulai Misi pada kartu memilih mode
-    document.querySelectorAll("[data-mode]").forEach(function (btn) {
-      btn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        selectMode(btn.dataset.mode);
-      });
-    });
-
-    // Keluar Misi: dialog konfirmasi custom
-    btnExit.addEventListener("click", openExitDialog);
-    btnExitCancel.addEventListener("click", closeExitDialog);
-    btnExitConfirm.addEventListener("click", function () {
-      closeExitDialog();
-      show("intro");
-      selectedMode = null;
-      document.querySelectorAll(".mode-card").forEach(function (card) {
-        card.classList.remove("mode-card--selected");
-        var badge = card.querySelector(".mode-select-badge");
-        if (badge) badge.style.display = "none";
-      });
-      notify("Anda telah keluar dari misi.");
-    });
-
-    // Tutup dialog dengan tombol Esc
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && overlay.classList.contains("overlay--open")) {
-        closeExitDialog();
-      }
-    });
-
-    /* ---------- Mulai ---------- */
-    renderStepper(1);
-    show("intro");
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+  var btnExit = document.getElementById("btnExit");
+  if (btnExit) {
+    btnExit.addEventListener("click", function () {
+      if (exitModal) {
+        exitModal.removeAttribute("hidden");
+      }
+    });
+  }
+
+  if (modalCancel) {
+    modalCancel.addEventListener("click", function () {
+      if (exitModal) exitModal.setAttribute("hidden", "");
+    });
+  }
+
+  if (modalOk) {
+    modalOk.addEventListener("click", function () {
+      if (exitModal) exitModal.setAttribute("hidden", "");
+      document.dispatchEvent(new CustomEvent("fauna:exit"));
+      // Sembunyikan semua layar binary
+      document.querySelectorAll('.screen[id^="s-"]').forEach(function (s) {
+        s.classList.remove("is-visible", "active");
+      });
+      show("intro");
+      setTimeout(function () { show("welcome"); }, 900);
+    });
+  }
+
+  document.querySelectorAll("[data-mode]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var mode = btn.dataset.mode;
+      document.dispatchEvent(new CustomEvent("fauna:mode", { detail: { mode: mode } }));
+      if (mode !== "binary") {
+        notify("Mode Kelompokkan sedang disiapkan.");
+      }
+    });
+  });
+
+  /* ---------- Mulai ---------- */
+  renderStepper(1);
+  show("intro");
+  // Layar 1 (latar saja) tampil sebentar, lalu sambutan masuk
+  setTimeout(function () {
+    if (current === "intro") show("welcome");
+  }, 1200);
 })();

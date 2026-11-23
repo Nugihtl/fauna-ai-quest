@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fauna AI Quest</title>
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/opening.css">
+  <link rel="stylesheet" href="assets/css/binary.css">
+</head>
+<body>
+
+<div class="viewport" id="viewport">
+  <div class="stage" id="stage" data-screen="intro">
+
+    <!-- ============ LATAR (SVG, hasil rebuild dari vektor Figma) ============ -->
+    <svg class="scene" viewBox="0 0 1400 998" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#d3ecfa"/>
+          <stop offset=".55" stop-color="#e6f5fc"/>
+          <stop offset="1" stop-color="#f0faff"/>
+        </linearGradient>
+        <radialGradient id="sunGlow" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#ffe9a8" stop-opacity=".75"/>
+          <stop offset=".55" stop-color="#ffe9a8" stop-opacity=".28"/>
+          <stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="mtFront" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#6eaed1"/>
+          <stop offset="1" stop-color="#93c6e0"/>
+        </linearGradient>
+        <linearGradient id="mtBack" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#b9dbee"/>
+          <stop offset="1" stop-color="#d9eef8"/>
+        </linearGradient>
+        <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#86e3f2"/>
+          <stop offset=".45" stop-color="#37b6d8"/>
+          <stop offset="1" stop-color="#0f86b3"/>
+        </linearGradient>
+        <linearGradient id="hillL" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#6cc06b"/>
+          <stop offset="1" stop-color="#3a9448"/>
+        </linearGradient>
+        <linearGradient id="hillR" x1="1" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#62b863"/>
+          <stop offset="1" stop-color="#3b9549"/>
+        </linearGradient>
+      </defs>
+
+      <!-- langit -->
+      <rect width="1400" height="998" fill="url(#sky)"/>
+      <circle cx="223" cy="175" r="250" fill="url(#sunGlow)"/>
+      <circle cx="223" cy="175" r="68" fill="#f8dd98"/>
+      <circle cx="223" cy="175" r="51" fill="#ffe9bd"/>
+
+      <!-- awan -->
+      <g fill="#fff" opacity=".6">
+        <g transform="translate(661 137)"><path d="M0 0a30 30 0 0 1 28-24 38 38 0 0 1 70-8 32 32 0 0 1 30 32z"/></g>
+        <g transform="translate(1030 185)"><path d="M0 0a38 38 0 0 1 36-34 56 56 0 0 1 104-12 42 42 0 0 1 36 46z"/></g>
+        <g transform="translate(1205 223)"><path d="M0 0a24 24 0 0 1 22-22 34 34 0 0 1 62-4 26 26 0 0 1 36 26z"/></g>
+      </g>
+
+      <!-- gunung belakang -->
+      <g fill="url(#mtBack)" opacity=".95">
+        <polygon points="250,570 466,380 690,570"/>
+        <polygon points="680,560 845,410 1075,566"/>
+      </g>
+      <!-- gunung depan -->
+      <polygon fill="url(#mtFront)" points="0,520 150,462 380,583 603,438 816,593 1011,438 1225,593 1400,482 1400,680 0,680"/>
+      <!-- pinus jauh -->
+      <g fill="#3d7f6a" opacity=".85">
+        <polygon points="40,606 48,578 56,606"/><polygon points="68,606 77,576 86,606"/>
+        <polygon points="103,610 112,586 121,610"/><polygon points="136,612 145,594 154,612"/>
+        <polygon points="1288,606 1297,576 1306,606"/><polygon points="1322,612 1331,590 1340,612"/>
+      </g>
+      <!-- bukit hijau -->
+      <path d="M0 668C0 640 120 610 260 610C450 610 560 655 720 660C850 662 920 640 1000 625C1120 604 1280 604 1400 640L1400 690L0 690Z" fill="#2c7a46"/>
+
+      <!-- danau -->
+      <rect y="662" width="1400" height="340" fill="url(#lake)"/>
+      <g stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".65">
+        <line x1="272" y1="700" x2="408" y2="700"/><line x1="322" y1="716" x2="388" y2="716"/>
+        <line x1="216" y1="739" x2="282" y2="739"/><line x1="624" y1="695" x2="718" y2="695" opacity=".5"/>
+        <line x1="953" y1="698" x2="1108" y2="698"/><line x1="1012" y1="714" x2="1080" y2="714"/>
+        <line x1="1128" y1="744" x2="1235" y2="744"/>
+      </g>
+
+      <!-- tepi kiri -->
+      <path d="M0 700C150 700 300 770 325 880C335 930 305 980 200 998L0 998Z" fill="url(#hillL)"/>
+      <path d="M325 880C335 930 305 980 200 998L240 998C310 975 345 930 325 880Z" fill="#2f8a41" opacity=".6"/>
+      <!-- tepi kanan -->
+      <path d="M1400 752C1250 760 1130 830 1097 998L1400 998Z" fill="url(#hillR)"/>
+      <path d="M1400 785C1300 790 1215 860 1190 998L1400 998Z" fill="#58ae5a"/>
+
+      <!-- pohon kiri -->
+      <rect x="112" y="478" width="24" height="328" rx="12" fill="#5c3f3b"/>
+      <rect x="34" y="520" width="18" height="278" rx="9" fill="#5c3f3b"/>
+      <polygon points="0,535 93,535 42,462 0,465" fill="#1f5e20"/>
+      <polygon points="3,467 40,385 70,467" fill="#3d9a43"/>
+      <polygon points="14,408 42,322 70,408" fill="#43a047"/>
+      <circle cx="80" cy="418" r="60" fill="#2f8f3b"/>
+      <circle cx="162" cy="440" r="64" fill="#2f8f3b"/>
+      <circle cx="122" cy="382" r="62" fill="#4caf50"/>
+      <circle cx="116" cy="336" r="47" fill="#81c784"/>
+      <g fill="#ffd166"><circle cx="102" cy="355" r="7"/><circle cx="141" cy="394" r="8"/><circle cx="77" cy="408" r="9"/><circle cx="136" cy="457" r="8"/></g>
+
+      <!-- pohon kanan -->
+      <rect x="1255" y="480" width="24" height="326" rx="12" fill="#5c3f3b"/>
+      <rect x="1351" y="540" width="18" height="258" rx="9" fill="#5c3f3b"/>
+      <polygon points="1308,545 1400,545 1400,478 1352,468" fill="#1f5e20"/>
+      <polygon points="1336,482 1362,332 1400,480" fill="#3d9a43"/>
+      <circle cx="1225" cy="433" r="70" fill="#2f8f3b"/>
+      <circle cx="1312" cy="422" r="68" fill="#2f8f3b"/>
+      <circle cx="1264" cy="362" r="62" fill="#4caf50"/>
+      <circle cx="1258" cy="312" r="48" fill="#81c784"/>
+      <g fill="#ffd166"><circle cx="1254" cy="331" r="7"/><circle cx="1230" cy="384" r="8"/><circle cx="1298" cy="375" r="8"/><circle cx="1293" cy="443" r="8"/></g>
+
+      <!-- semak -->
+      <circle cx="210" cy="832" r="57" fill="#2f8f3b"/>
+      <circle cx="243" cy="815" r="40" fill="#4caf50"/>
+      <circle cx="276" cy="836" r="32" fill="#81c784"/>
+      <g fill="#ffd166"><circle cx="228" cy="802" r="7"/><circle cx="272" cy="822" r="6"/><circle cx="199" cy="860" r="6"/></g>
+      <circle cx="1195" cy="826" r="35" fill="#2f8f3b"/>
+      <circle cx="1160" cy="830" r="55" fill="#2f8f3b" opacity=".9"/>
+      <circle cx="1110" cy="866" r="38" fill="#4caf50"/>
+      <circle cx="1147" cy="807" r="33" fill="#81c784"/>
+      <g fill="#ffd166"><circle cx="1133" cy="796" r="6"/><circle cx="1172" cy="812" r="6"/></g>
+
+      <!-- batu -->
+      <g>
+        <ellipse cx="175" cy="918" rx="58" ry="31" fill="#4f6d7d"/><ellipse cx="175" cy="910" rx="58" ry="30" fill="#5b7a8c"/><ellipse cx="165" cy="903" rx="37" ry="12" fill="#8fa9b5"/>
+        <ellipse cx="92" cy="946" rx="42" ry="23" fill="#34495a"/><ellipse cx="92" cy="941" rx="42" ry="22" fill="#44596a"/><ellipse cx="86" cy="935" rx="22" ry="8" fill="#7f97a3"/>
+        <ellipse cx="243" cy="949" rx="37" ry="19" fill="#5b7a8c"/><ellipse cx="240" cy="944" rx="22" ry="7" fill="#8fa9b5"/>
+        <ellipse cx="1224" cy="918" rx="63" ry="33" fill="#4f6d7d"/><ellipse cx="1224" cy="910" rx="63" ry="32" fill="#5b7a8c"/><ellipse cx="1214" cy="903" rx="38" ry="13" fill="#8fa9b5"/>
+        <ellipse cx="1312" cy="936" rx="47" ry="24" fill="#34495a"/><ellipse cx="1312" cy="931" rx="47" ry="23" fill="#44596a"/>
+        <ellipse cx="1147" cy="953" rx="34" ry="17" fill="#6b8797"/>
+      </g>
+
+      <!-- daun pojok -->
+      <g id="leafTL">
+        <path d="M0 65L102 65C96 98 134 124 108 158C58 150 12 104 0 82Z" fill="#2e7d32"/>
+        <path d="M0 65L72 65C84 92 70 95 62 97C34 92 10 84 0 76Z" fill="#4caf50"/>
+        <ellipse cx="112" cy="122" rx="15" ry="31" transform="rotate(-38 112 122)" fill="#81c784"/>
+        <circle cx="97" cy="108" r="5.5" fill="#ffd166"/>
+      </g>
+      <g transform="translate(1400 0) scale(-1 1)">
+        <path d="M0 65L102 65C96 98 134 124 108 158C58 150 12 104 0 82Z" fill="#2e7d32"/>
+        <path d="M0 65L72 65C84 92 70 95 62 97C34 92 10 84 0 76Z" fill="#4caf50"/>
+        <ellipse cx="112" cy="122" rx="15" ry="31" transform="rotate(-38 112 122)" fill="#81c784"/>
+        <circle cx="97" cy="108" r="5.5" fill="#ffd166"/>
+      </g>
+    </svg>
+
+    <!-- ============ HEADER GLOBAL ============ -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-logo"></span>
+        <span class="brand-name">FAUNA AI QUEST</span>
+      </div>
+
+      <nav class="stepper" id="stepper" aria-label="Progres misi"></nav>
+
+      <button class="btn-exit" id="btnExit" type="button">
+        Keluar Misi
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </header>
+
+    <!-- ============ ALUR OPENING ============ -->
+
+    <!-- Layar Sambutan & Petunjuk -->
+    <section class="screen" id="screen-welcome" aria-labelledby="welcomeTitle">
+      <article class="panel welcome-panel">
+        <h1 id="welcomeTitle">Selamat Datang di Misi Fauna AI!</h1>
+        <div class="instruction">
+          <span class="instruction-label">PETUNJUK AKTIVITAS</span>
+          <p>Baca instruksi dengan seksama, amati karakteristik ekosistem, lalu pilih jawaban atau lakukan eksperimen di bawah ini.</p>
+        </div>
+        <div class="welcome-body">
+          <h2>Yuk, bantu Fauna AI mengenali dunia hewan!</h2>
+          <p>Fauna AI sedang belajar mengelompokkan hewan ke dalam lima kelas vertebrata. Sebagai pelatih, tugasmu adalah memberikan label pada gambar, menguji hasil klasifikasi, dan mencari tahu bagaimana data memengaruhi prediksi Fauna AI.</p>
+        </div>
+      </article>
+      <img class="robot robot-welcome" src="assets/images/mascot/robot.webp" alt="Robot Fauna AI">
+      <button class="btn-start btn-start-welcome" id="btnStart" type="button">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M5 3l15 9-15 9z"/></svg>
+        Mulai Misi
+      </button>
+    </section>
+
+    <!-- Layar Pemilihan Mode -->
+    <section class="screen" id="screen-mode" aria-labelledby="modeTitle">
+      <img class="robot robot-mode" src="assets/images/mascot/robot.webp" alt="Robot Fauna AI">
+
+      <div class="bubble">
+        <h2 id="modeTitle">Pilih Mode Permainanmu!</h2>
+        <p>Belajar bagaimana AI mengenali dan mengelompokkan hewan vertebrata.</p>
+      </div>
+
+      <article class="mode-card mode-binary">
+        <h3 class="pill">Binary</h3>
+        <p class="mode-desc">Bantu Fauna mengenali apakah hewan termasuk kelas yang dipilih atau bukan.</p>
+        <div class="mode-art mode-art-binary">
+          <img src="assets/images/modes/kucing.webp" alt="Kucing">
+          <span class="vline"></span>
+          <img src="assets/images/modes/camar.webp" alt="Burung camar">
+        </div>
+        <button class="btn-start" type="button" data-mode="binary">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M5 3l15 9-15 9z"/></svg>
+          Mulai Misi
+        </button>
+      </article>
+
+      <article class="mode-card mode-multi">
+        <h3 class="pill">Kelompokkan</h3>
+        <p class="mode-desc">Kelompokkan setiap hewan ke dalam salah satu dari 5 kelas vertebrata.</p>
+        <div class="mode-art mode-art-multi">
+          <img src="assets/images/modes/kucing.webp" alt="Kucing">
+          <img src="assets/images/modes/katak.webp" alt="Katak">
+          <img src="assets/images/modes/kudalaut.webp" alt="Kuda laut">
+          <img src="assets/images/modes/pinguin.webp" alt="Pinguin">
+          <img src="assets/images/modes/bunglon.webp" alt="Bunglon">
+        </div>
+        <button class="btn-start" type="button" data-mode="kelompokkan">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M5 3l15 9-15 9z"/></svg>
+          Mulai Misi
+        </button>
+      </article>
+    </section>
+
+    <!-- ============ ALUR GAMEPLAY: BINARY KLASIFIKASI ============ -->
+
+    <!-- Layar 2: Pilih Kelompok Hewan -->
+    <section class="screen" id="s-pick" data-step="2">
+      <div class="robot-slot" data-robot data-scale="0.567" style="left:121px;top:150px"></div>
+      <div class="title-banner">Binary Klasifikasi</div>
+      <div class="panel pick-panel">
+        <h1>Pilih Kelompok Hewan Vertebrata!</h1>
+        <p class="lead">Pilih satu kelompok untuk mengenal cara Fauna AI belajar dari contoh gambar.</p>
+        <div class="group-grid" id="group-grid"></div>
+      </div>
+    </section>
+
+    <!-- Layar 3: Mengajari Fauna (Pelabelan) -->
+    <section class="screen" id="s-teach" data-step="3">
+      <div class="teach-track" id="teach-track"></div>
+      <div class="teach-robot" id="teach-robot"></div>
+      <div class="learn-count" id="learn-count">0</div>
+      <div class="label-buttons">
+        <button type="button" class="label-btn is-yes" id="btn-yes">Mamalia</button>
+        <button type="button" class="label-btn is-no" id="btn-no">Bukan Mamalia</button>
+      </div>
+      <button type="button" class="btn-back" data-go="pick">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Kembali
+      </button>
+    </section>
+
+    <!-- Layar 3b: Terima Kasih (Setelah Mengajari) -->
+    <section class="screen" id="s-thanks" data-step="3">
+      <img class="mascot" src="assets/images/mascot/robot.webp" alt="Maskot Fauna AI" style="left:72px;top:393px;width:377px">
+      <div class="panel msg-panel">
+        <h2>Terima Kasih Sudah Mengajariku!</h2>
+        <p class="msg-main">Fauna AI sudah menerima semua contoh gambar dan jawaban yang kamu berikan. Semua jawabanmu akan kusimpan sebagai bahan belajarku!</p>
+        <p class="msg-sub">Yuk lihat bagaimana hasil dari jawabanmu!</p>
+      </div>
+      <button type="button" class="btn-yellow" data-go="check">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg>
+        Mulai Analisis
+      </button>
+    </section>
+
+    <!-- Layar 4: Fauna Memeriksa Jawaban (Scanning Animasi) -->
+    <section class="screen scan-screen" id="s-check" data-step="4">
+      <div class="beam"></div>
+      <div class="robot-slot" data-robot data-scale="1" style="left:560px;top:110px"></div>
+      <div class="scan-track"></div>
+      <div class="verdict-frame"></div>
+      <div class="verdict-icon"></div>
+      <div class="verdict-cap"></div>
+      <button type="button" class="btn-next" data-go="recap">Lanjut <span class="arrow">→</span></button>
+    </section>
+
+    <!-- Layar 5: Apa yang Sudah Dipelajari (Rekap Data) -->
+    <section class="screen" id="s-recap" data-step="5">
+      <div class="panel recap-panel">
+        <div class="robot-slot" data-robot data-scale="0.475" style="left:30px;top:58px"></div>
+        <div class="bubble">
+          <strong>Yeay! Aku sudah belajar!</strong>
+          <span>Terima kasih sudah mengajariku! Sekarang aku akan menunjukkan apa saja yang sudah aku pelajari darimu.</span>
+        </div>
+        <div class="tabs">
+          <button type="button" class="tab is-yes active" data-tab="yes">Mamalia</button>
+          <button type="button" class="tab is-no" data-tab="no">Bukan Mamalia</button>
+        </div>
+        <div class="thumb-grid" id="thumb-grid"></div>
+        <div class="note"><b>Aku percaya semua jawabanmu!</b> Aku akan mengingat semua contoh yang kamu berikan, termasuk jika ada jawaban yang keliru.</div>
+      </div>
+      <button type="button" class="btn-back" data-go="check">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Kembali
+      </button>
+      <button type="button" class="btn-next" data-go="predictIntro">Lanjut <span class="arrow">→</span></button>
+    </section>
+
+    <!-- Layar 6a: Pengantar Pengujian Prediksi -->
+    <section class="screen" id="s-predictIntro" data-step="6">
+      <img class="mascot" src="assets/images/mascot/robot.webp" alt="Maskot Fauna AI" style="left:72px;top:393px;width:377px">
+      <div class="panel msg-panel">
+        <h2>Saatnya Fauna AI Bekerja!</h2>
+        <p class="msg-main">Fauna AI akan mencoba mengenali gambar baru berdasarkan data yang sudah kamu ajarkan.</p>
+        <p class="msg-sub">Yuk lihat bagaimana Fauna AI mengklasifikasikan hewan</p>
+      </div>
+      <button type="button" class="btn-yellow" data-go="predict">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg>
+        Mulai Analisis
+      </button>
+    </section>
+
+    <!-- Layar 6b: Fauna Menebak (Pemindaian Prediksi) -->
+    <section class="screen scan-screen" id="s-predict" data-step="6">
+      <div class="beam"></div>
+      <div class="robot-slot" data-robot data-scale="1" style="left:560px;top:110px"></div>
+      <div class="scan-track"></div>
+      <div class="verdict-frame"></div>
+      <div class="verdict-icon"></div>
+      <div class="verdict-cap"></div>
+      <button type="button" class="btn-next" data-go="results">Lanjut <span class="arrow">→</span></button>
+    </section>
+
+    <!-- Layar 7: Hasil Analisis & Refleksi Belajar -->
+    <section class="screen" id="s-results" data-step="7">
+      <div class="panel result-panel">
+        <h2>Hasil Analisis Fauna AI!</h2>
+        <p class="result-sub" id="result-sub"></p>
+        <div class="score-card">
+          <div class="score-value" id="score-value">0%</div>
+          <div class="score-label">Akurasi Fauna</div>
+          <div class="score-chips">
+            <span class="chip chip-ok" id="chip-ok"></span>
+            <span class="chip chip-bad" id="chip-bad"></span>
+          </div>
+        </div>
+        <div class="result-row" id="result-row"></div>
+        <div class="pager" id="pager"></div>
+        <div class="reasons" id="reasons"></div>
+      </div>
+      <button type="button" class="btn-back" data-go="predict">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Kembali
+      </button>
+      <button type="button" class="btn-next wide" id="btn-retrain">Perbaiki dan Latih Ulang <span class="arrow">→</span></button>
+    </section>
+
+    <!-- Toast Notifikasi -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Modal Konfirmasi Keluar Misi -->
+    <div class="modal" id="modal" hidden>
+      <div class="modal-box">
+        <h3>Keluar dari misi?</h3>
+        <p>Semua jawaban yang sudah kamu berikan akan dihapus dan kamu kembali ke awal.</p>
+        <div class="modal-actions">
+          <button type="button" class="m-btn ghost" id="modal-cancel">Batal</button>
+          <button type="button" class="m-btn" id="modal-ok">Ya, keluar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="assets/js/opening.js"></script>
+<script src="assets/js/binary.js"></script>
+</body>
+</html>

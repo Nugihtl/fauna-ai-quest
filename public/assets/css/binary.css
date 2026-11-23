@@ -1,0 +1,851 @@
+/* ==========================================================
+   Fauna AI Quest — Binary Klasifikasi CSS
+   Menggunakan design tokens dari tokens.css & font lokal Nunito
+   ========================================================== */
+
+/* ---------- Panel & Banner ---------- */
+.title-banner {
+  position: absolute;
+  left: 323px;
+  top: 210px;
+  width: 421px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  background: var(--blue-200);
+  border: 2px solid var(--cyan-200);
+  color: #fff;
+  font-size: 38px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 14px rgba(11, 61, 98, 0.25);
+  z-index: 5;
+}
+
+.panel {
+  position: absolute;
+  background: var(--neutral-300);
+  border: 3px solid var(--cyan-200);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 14px 34px rgba(8, 43, 69, 0.22), inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+/* ---------- Robot SVG & Maskot ---------- */
+.robot-slot,
+.teach-robot {
+  position: absolute;
+}
+.robot-slot svg,
+.teach-robot svg {
+  display: block;
+  overflow: visible;
+}
+.robot .dome {
+  transform-origin: 279px 89px;
+  transition: transform 0.4s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.robot.open .dome {
+  transform: translate(14px, -10px) rotate(74deg);
+}
+.robot.bob {
+  animation: robotBob 3.2s ease-in-out infinite;
+}
+@keyframes robotBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.screen .mascot {
+  position: absolute;
+  filter: drop-shadow(0 10px 14px rgba(0, 40, 80, 0.25));
+  animation: mascotFloat 4s ease-in-out infinite;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+@keyframes mascotFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ---------- Layar 2: Pilih Kelompok (s-pick) ---------- */
+.pick-panel {
+  left: 127px;
+  top: 332px;
+  width: 1185px;
+  height: 474px;
+  padding: 28px 28px 0;
+  z-index: 5;
+}
+.pick-panel h1 {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--navy-400);
+}
+.pick-panel .lead {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--navy-200);
+  margin-top: 4px;
+}
+.group-grid {
+  position: absolute;
+  left: 25px;
+  top: 111px;
+  display: grid;
+  grid-template-columns: repeat(5, 214px);
+  gap: 15px;
+}
+.group-card {
+  height: 296px;
+  background: #fff;
+  border: 2px solid var(--blue-75);
+  border-radius: 9px;
+  padding: 13px 13px 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  transition: 0.2s;
+  box-shadow: 0 3px 8px rgba(11, 60, 93, 0.08);
+  cursor: pointer;
+}
+.group-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(11, 60, 93, 0.18);
+  border-color: var(--blue-200);
+}
+.group-card.selected {
+  border-color: var(--blue-300);
+  box-shadow: 0 0 0 3px rgba(17, 138, 178, 0.3), 0 10px 22px rgba(11, 60, 93, 0.18);
+}
+.group-card img {
+  width: 100%;
+  height: 135px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.group-card h3 {
+  font-size: 21px;
+  font-weight: 800;
+  margin-top: 14px;
+  line-height: 1.1;
+  color: var(--navy-400);
+}
+.group-card p {
+  font-size: 13.5px;
+  line-height: 1.42;
+  color: var(--navy-200);
+  margin-top: 7px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.group-card .ex {
+  border-top: 1px solid var(--navy-50);
+  padding: 9px 0 10px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--blue-300);
+  line-height: 1.35;
+  height: 52px;
+  flex: none;
+  overflow: hidden;
+}
+
+/* ---------- Tombol Aksi Global Game ---------- */
+.btn-back {
+  position: absolute;
+  left: 63px;
+  top: 899px;
+  width: 219px;
+  height: 50px;
+  border-radius: 26px;
+  background: var(--neutral-300);
+  border: 2.5px solid var(--navy-300);
+  color: var(--navy-300);
+  font-size: 21px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 4px 10px rgba(0, 40, 80, 0.18);
+  transition: 0.2s;
+  z-index: 6;
+  cursor: pointer;
+}
+.btn-back:hover {
+  background: #fff;
+  transform: translateX(-3px);
+}
+
+.btn-next {
+  position: absolute;
+  left: 1160px;
+  top: 899px;
+  width: 219px;
+  height: 52px;
+  border-radius: 27px;
+  background: var(--blue-300);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 5px 12px rgba(0, 60, 100, 0.28);
+  transition: 0.2s;
+  z-index: 6;
+  cursor: pointer;
+}
+.btn-next.wide {
+  left: 1008px;
+  width: 371px;
+}
+.btn-next .arrow {
+  font-size: 27px;
+  line-height: 1;
+  transition: 0.2s;
+}
+.btn-next:hover {
+  background: var(--blue-400);
+}
+.btn-next:hover .arrow {
+  transform: translateX(4px);
+}
+
+.btn-yellow {
+  position: absolute;
+  left: 1093px;
+  top: 889px;
+  width: 285px;
+  height: 67px;
+  border-radius: 34px;
+  background: var(--yellow-300);
+  color: var(--navy-400);
+  font-size: 26px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  box-shadow: 0 6px 0 var(--yellow-400), 0 12px 20px rgba(0, 50, 90, 0.25);
+  transition: 0.15s;
+  z-index: 6;
+  cursor: pointer;
+}
+.btn-yellow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 var(--yellow-400), 0 14px 22px rgba(0, 50, 90, 0.25);
+}
+.btn-yellow:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--yellow-400);
+}
+
+/* ---------- Layar 3: Mengajari Fauna (s-teach) ---------- */
+.teach-track {
+  position: absolute;
+  left: 0;
+  top: 231px;
+  width: 1440px;
+  height: 478px;
+}
+.t-card {
+  position: absolute;
+  top: 0;
+  left: 86px;
+  width: 397px;
+  height: 478px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 21px 17px 0;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 50, 90, 0.18);
+  transition: transform 0.6s cubic-bezier(0.5, 0.1, 0.2, 1), opacity 0.4s;
+}
+.t-card img {
+  width: 363px;
+  height: 347px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.t-card h3 {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--navy-400);
+  margin-top: 26px;
+  line-height: 1.1;
+}
+.t-card.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.t-card.fly {
+  transition: transform 0.7s cubic-bezier(0.6, 0, 0.3, 1), opacity 0.7s;
+  opacity: 0;
+}
+.teach-robot {
+  left: 978px;
+  top: 345px;
+}
+.learn-count {
+  position: absolute;
+  left: 1138px;
+  top: 734px;
+  width: 62px;
+  height: 35px;
+  border-radius: 9px;
+  background: rgba(190, 235, 245, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: var(--blue-300);
+  font-size: 19px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+.learn-count.bump {
+  animation: bump 0.45s;
+}
+@keyframes bump {
+  40% { transform: scale(1.25); }
+}
+.label-buttons {
+  position: absolute;
+  left: 482px;
+  top: 795px;
+  display: flex;
+  gap: 100px;
+  z-index: 6;
+}
+.label-btn {
+  height: 55px;
+  border-radius: 5px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--navy-400);
+  padding: 0;
+  white-space: nowrap;
+  transition: 0.18s;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.label-btn.is-yes {
+  width: 168px;
+  background: var(--green-100);
+  border-color: var(--green-75);
+}
+.label-btn.is-no {
+  width: 208px;
+  background: var(--red-75);
+  border-color: var(--red-100);
+}
+.label-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.07);
+  box-shadow: 0 8px 14px rgba(0, 50, 90, 0.2);
+}
+.label-btn:disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ---------- Panel Dialog (s-thanks / s-predictIntro) ---------- */
+.msg-panel {
+  left: 457px;
+  top: 393px;
+  width: 866px;
+  height: 291px;
+  text-align: center;
+  padding: 48px 40px 0;
+}
+.msg-panel h2 {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--navy-400);
+}
+.msg-main {
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.55;
+  margin: 23px 28px 0;
+  color: var(--navy-300);
+}
+.msg-sub {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 5px;
+  color: var(--navy-200);
+}
+
+/* ---------- Pemindai / Scanner (s-check & s-predict) ---------- */
+.beam {
+  position: absolute;
+  left: 456px;
+  top: 388px;
+  width: 527px;
+  height: 636px;
+  clip-path: polygon(31% 0, 69% 0, 100% 100%, 0 100%);
+  z-index: 2;
+}
+.beam::before,
+.beam::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.35s;
+}
+.beam::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.28));
+}
+.beam::after {
+  opacity: 0;
+}
+.beam.ok::after {
+  background: linear-gradient(180deg, rgba(120, 240, 150, 0.6), rgba(24, 110, 100, 0.8));
+  opacity: 1;
+}
+.beam.bad::after {
+  background: linear-gradient(180deg, rgba(255, 130, 130, 0.7), rgba(80, 95, 125, 0.9));
+  opacity: 1;
+}
+.scan-screen .robot-slot {
+  z-index: 4;
+}
+.scan-track {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1440px;
+  height: 1024px;
+  z-index: 3;
+  pointer-events: none;
+}
+.scan-card {
+  position: absolute;
+  left: 584px;
+  top: 471px;
+  width: 272px;
+  height: 272px;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 3px solid #fff;
+  box-shadow: 0 8px 18px rgba(0, 40, 80, 0.28);
+  transition: transform 0.8s cubic-bezier(0.55, 0.1, 0.25, 1), opacity 0.4s;
+  background: #fff;
+}
+.scan-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.scan-card.hidden {
+  opacity: 0;
+}
+.verdict-frame {
+  position: absolute;
+  left: 531px;
+  top: 435px;
+  width: 378px;
+  height: 338px;
+  border: 9px solid transparent;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: scale(1.08);
+}
+.verdict-frame.ok {
+  border-color: var(--green-300);
+  box-shadow: 0 0 28px rgba(46, 125, 50, 0.7), inset 0 0 22px rgba(46, 125, 50, 0.35);
+  opacity: 1;
+  transform: none;
+}
+.verdict-frame.bad {
+  border-color: var(--red-300);
+  box-shadow: 0 0 28px rgba(218, 43, 43, 0.7), inset 0 0 22px rgba(218, 43, 43, 0.3);
+  opacity: 1;
+  transform: none;
+}
+.verdict-icon {
+  position: absolute;
+  left: 676px;
+  top: 801px;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.verdict-icon.ok {
+  background: var(--green-300);
+  opacity: 1;
+  transform: none;
+  box-shadow: 0 6px 16px rgba(0, 80, 40, 0.35);
+}
+.verdict-icon.bad {
+  background: var(--red-300);
+  opacity: 1;
+  transform: none;
+  box-shadow: 0 6px 16px rgba(120, 0, 0, 0.35);
+}
+.verdict-cap {
+  position: absolute;
+  left: 520px;
+  width: 400px;
+  top: 900px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 30, 60, 0.6);
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.verdict-cap.show {
+  opacity: 1;
+}
+
+/* ---------- Layar 5: Rekap Data Pelabelan (s-recap) ---------- */
+.recap-panel {
+  left: 127px;
+  top: 127px;
+  width: 1185px;
+  height: 742px;
+}
+.bubble {
+  position: absolute;
+  left: 177px;
+  top: 73px;
+  width: 962px;
+  height: 103px;
+  background: #fff;
+  border: 2px solid var(--cyan-200);
+  border-radius: 18px;
+  padding: 19px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 60, 100, 0.08);
+}
+.bubble strong {
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--navy-400);
+}
+.bubble span {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--navy-300);
+}
+.tabs {
+  position: absolute;
+  left: 0;
+  top: 224px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 19px;
+}
+.tab {
+  height: 55px;
+  border-radius: 6px;
+  font-size: 24px;
+  font-weight: 800;
+  padding: 0 30px;
+  border: 2px solid var(--cyan-100);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--navy-75);
+  transition: 0.2s;
+  cursor: pointer;
+}
+.tab.is-yes {
+  width: 168px;
+}
+.tab.is-no {
+  width: 208px;
+  padding: 0;
+}
+.tab.is-yes.active {
+  background: var(--green-100);
+  border-color: var(--green-200);
+  color: var(--navy-400);
+  box-shadow: 0 4px 10px rgba(30, 100, 60, 0.25);
+}
+.tab.is-no.active {
+  background: var(--red-75);
+  border-color: var(--red-200);
+  color: var(--navy-400);
+  box-shadow: 0 4px 10px rgba(140, 40, 40, 0.25);
+}
+.tab:not(.active):hover {
+  background: #fff;
+}
+.thumb-grid {
+  position: absolute;
+  left: 96px;
+  top: 320px;
+  width: 996px;
+  height: 240px;
+  display: grid;
+  grid-template-columns: repeat(8, 98px);
+  grid-auto-rows: 98px;
+  gap: 32px 32px;
+  align-content: start;
+}
+.thumb {
+  width: 98px;
+  height: 98px;
+  border-radius: 17px;
+  overflow: hidden;
+  border: 2px solid #fff;
+  box-shadow: 0 3px 8px rgba(0, 50, 90, 0.25);
+  background: var(--navy-50);
+  animation: pop 0.45s both;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.empty-msg {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--navy-100);
+  padding-top: 38px;
+}
+.note {
+  position: absolute;
+  left: 128px;
+  top: 617px;
+  width: 924px;
+  height: 53px;
+  background: #fff;
+  border: 2px solid var(--cyan-200);
+  border-radius: 14px;
+  text-align: center;
+  line-height: 49px;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--navy-300);
+}
+.note b {
+  font-weight: 800;
+}
+
+/* ---------- Layar 7: Hasil Klasifikasi (s-results) ---------- */
+.result-panel {
+  left: 282px;
+  top: 160px;
+  width: 875px;
+  height: 720px;
+  overflow: hidden;
+  text-align: center;
+}
+.result-panel h2 {
+  margin-top: 37px;
+  font-size: 41px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--navy-400);
+}
+.result-sub {
+  font-size: 23px;
+  font-weight: 700;
+  margin-top: 10px;
+  color: var(--navy-200);
+}
+.score-card {
+  position: absolute;
+  left: 73px;
+  top: 158px;
+  width: 726px;
+  height: 166px;
+  background: #fff;
+  border: 2px solid var(--cyan-200);
+  border-radius: 14px;
+  padding-top: 15px;
+}
+.score-value {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--green-300);
+  line-height: 1.2;
+}
+.score-value.mid {
+  color: var(--yellow-400);
+}
+.score-value.low {
+  color: var(--red-300);
+}
+.score-label {
+  font-size: 16.5px;
+  font-weight: 800;
+  margin-top: 2px;
+  color: var(--navy-200);
+}
+.score-chips {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 17px;
+}
+.chip {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 17px;
+  font-size: 15.5px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+.chip-ok {
+  background: var(--green-50);
+  color: var(--green-300);
+}
+.chip-bad {
+  background: var(--red-50);
+  color: var(--red-300);
+}
+.result-row {
+  position: absolute;
+  left: 73px;
+  top: 342px;
+  width: 726px;
+  display: grid;
+  grid-template-columns: repeat(5, 115px);
+  gap: 37px;
+  min-height: 166px;
+  justify-content: start;
+}
+.r-card {
+  height: 166px;
+  background: var(--neutral-100);
+  border: 2px solid var(--blue-50);
+  border-radius: 14px;
+  padding: 6px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: pop 0.4s both;
+}
+.r-card img {
+  width: 98px;
+  height: 98px;
+  object-fit: cover;
+  border-radius: 15px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 50, 90, 0.3);
+}
+.r-card .nm {
+  font-size: 15.5px;
+  font-weight: 800;
+  margin-top: 6px;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--navy-400);
+}
+.r-card .tag {
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 2px 16px;
+  border-radius: 11px;
+}
+.tag.ok {
+  background: var(--green-75);
+  color: var(--green-500);
+}
+.tag.bad {
+  background: var(--red-50);
+  color: var(--red-400);
+}
+.pager {
+  position: absolute;
+  left: 0;
+  top: 523px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+.pager button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2.5px solid var(--blue-300);
+  display: grid;
+  place-items: center;
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--navy-75);
+  background: #fff;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.pager button.arrow {
+  color: var(--blue-300);
+}
+.pager button.cur {
+  color: var(--navy-400);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(17, 138, 178, 0.2);
+}
+.pager button:hover:not(:disabled) {
+  background: var(--blue-50);
+}
+.pager button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.reasons {
+  position: absolute;
+  left: 0;
+  top: 586px;
+  width: 100%;
+  height: 134px;
+  background: rgba(222, 236, 249, 0.55);
+  text-align: left;
+  padding: 17px 34px 0;
+  font-size: 15px;
+}
+.reasons h4 {
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--yellow-400);
+  text-transform: uppercase;
+}
+.reasons ul {
+  margin: 6px 0 0 18px;
+  line-height: 1.6;
+  font-weight: 600;
+  color: var(--navy-300);
+}
+.reasons::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 82px;
+  height: 1px;
+  background: var(--navy-50);
+}
+
+/* ---------- Animasi Pop ---------- */
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: none; }
+}

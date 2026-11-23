@@ -1,8 +1,39 @@
-/* ==========================================================================
-   Fauna Quest — Opening styles (persis dengan referensi folder Downloads)
-   Aset yang sudah ada di repo (landscape.png, fauna.png, logo.svg, Nunito TTF)
-   dipertahankan; aset yang belum ada di repo (ilustrasi mode) diambil dari folder Downloads.
-   ========================================================================== */
+/* ===== Font: Nunito (lokal dari repo) ===== */
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --navy: #0d3b66;
@@ -10,32 +41,23 @@
   --yellow: #ffd166;
   --sky-border: #a6dff0;
   --panel: #f4f9ff;
-  --stage-w: 1400px;
-  --stage-h: 998px;
+  --stage-w: 1440px;
+  --stage-h: 1024px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html,
-body {
+html, body {
   height: 100%;
-  font-family: var(--font-family);
+  font-family: "Nunito", system-ui, sans-serif;
   color: var(--navy);
   background: #cfeaf8;
   overflow: hidden;
 }
 
-button {
-  font-family: inherit;
-  cursor: pointer;
-  border: 0;
-}
+button { font-family: inherit; cursor: pointer; border: 0; }
 
-/* ===== Viewport + stage (didesain 1400×998, diskalakan agar muat layar) ===== */
+/* ===== Viewport + stage (didesain 1400x998, diskalakan agar muat layar) ===== */
 .viewport {
   position: fixed;
   inset: 0;
@@ -54,66 +76,52 @@ button {
   background: #d3ecfa;
 }
 
-.scene-bg {
+.scene {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  z-index: 0;
 }
 
 /* ===== Header ===== */
 .topbar {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 65px;
   background: #fff;
   border-bottom: 1px solid #d6e6f2;
-  box-shadow: 0 2px 8px rgba(30, 90, 130, 0.12);
+  box-shadow: 0 2px 8px rgba(30, 90, 130, .12);
   z-index: 20;
 }
 
 .brand {
   position: absolute;
-  left: 24px;
-  top: 15px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  left: 24px; top: 15px;
+  display: flex; align-items: center; gap: 12px;
 }
-
 .brand-logo {
-  width: 35px;
-  height: 36px;
+  width: 35px; height: 36px;
   border-radius: 10px;
-  flex-shrink: 0;
+  background: linear-gradient(135deg, #1a9bc7, #0b5a85);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
 }
-
 .brand-name {
   font-size: 19px;
   font-weight: 800;
-  letter-spacing: 0.1px;
+  letter-spacing: .1px;
   color: var(--navy);
 }
 
 .stepper {
   position: absolute;
-  left: 362px;
-  top: 15px;
-  display: flex;
-  align-items: center;
+  left: 362px; top: 15px;
+  display: flex; align-items: center;
 }
-
 .step {
   position: relative;
-  width: 34px;
-  height: 34px;
+  width: 34px; height: 34px;
   margin-right: 20.6px;
-  display: grid;
-  place-items: center;
+  display: grid; place-items: center;
   border-radius: 50%;
   background: #fff;
   border: 2px solid #d3e4f2;
@@ -122,34 +130,24 @@ button {
   font-weight: 800;
   flex: none;
 }
-
-.step:last-child {
-  margin-right: 0;
-}
-
+.step:last-child { margin-right: 0; }
 .step:not(:last-child)::after {
   content: "";
   position: absolute;
-  left: 100%;
-  top: 50%;
-  width: 20.6px;
-  height: 2px;
+  left: 100%; top: 50%;
+  width: 20.6px; height: 2px;
   margin-top: -1px;
   background: #d9eaf5;
 }
-
 .step.is-active {
-  width: 36px;
-  height: 36px;
-  margin-left: -1px;
-  margin-right: 19.6px;
+  width: 36px; height: 36px;
+  margin-left: -1px; margin-right: 19.6px;
   background: var(--yellow);
   border-color: var(--yellow);
   color: var(--navy);
   font-size: 13px;
-  box-shadow: 0 2px 6px rgba(255, 190, 60, 0.45);
+  box-shadow: 0 2px 6px rgba(255, 190, 60, .45);
 }
-
 .step.is-done {
   background: var(--teal);
   border-color: var(--teal);
@@ -158,33 +156,19 @@ button {
 
 .btn-exit {
   position: absolute;
-  left: 1207px;
-  top: 17px;
+  left: 1207px; top: 17px;
   height: 31px;
   padding: 0 14px 0 15px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  display: inline-flex; align-items: center; gap: 8px;
   background: var(--teal);
   color: #fff;
   font-size: 13px;
   font-weight: 800;
   border-radius: 5px;
-  transition: background 0.15s, transform 0.15s;
+  transition: background .15s, transform .15s;
 }
-
-.btn-exit:hover {
-  background: #0f7399;
-}
-
-.btn-exit:active {
-  transform: scale(0.97);
-}
-
-.btn-exit:focus-visible {
-  outline: 3px solid var(--navy);
-  outline-offset: 2px;
-}
+.btn-exit:hover { background: #0f7399; }
+.btn-exit:active { transform: scale(.97); }
 
 /* ===== Layar ===== */
 .screen {
@@ -194,95 +178,78 @@ button {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+  transition: opacity .45s ease, visibility 0s linear .45s;
 }
-
-.screen.is-visible {
+.screen.is-visible,
+.screen.active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition: opacity 0.45s ease;
+  transition: opacity .45s ease;
 }
 
-/* ===== Layar 1: Intro (background + tombol Mulai Misi) ===== */
-.btn-start-intro {
+/* ===== Panel sambutan ===== */
+.panel {
   position: absolute;
-  left: 1063px;
-  top: 801px;
-  width: 277px;
+  background: var(--panel);
+  border: 3px solid var(--sky-border);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(20, 90, 130, .22);
 }
 
-/* ===== Panel sambutan — satu kelas tunggal, tidak ada double background/border ===== */
 .welcome-panel {
-  position: absolute;
-  left: 144px;
-  top: 135px;
-  width: 1113px;
-  height: 598px;
+  left: 144px; top: 135px;
+  width: 1113px; height: 598px;
   overflow: hidden;
   background: #f4f9ff;
-  border: 3px solid #a6dff0;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(20, 90, 130, 0.22);
 }
-
 .welcome-panel h1 {
   height: 74px;
   padding: 0 31px;
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   font-size: 34px;
   font-weight: 800;
-  letter-spacing: -0.2px;
+  letter-spacing: -.2px;
   background: #fafdff;
   border-bottom: 1px solid #dbe9f3;
 }
-
 .instruction {
   height: 62px;
   padding: 11px 31px 0;
   background: #e8f3fa;
   border-bottom: 1px solid #d4e6f2;
 }
-
 .instruction-label {
   display: block;
   font-size: 11.5px;
   font-weight: 800;
-  letter-spacing: 0.6px;
+  letter-spacing: .6px;
   color: var(--teal);
   margin-bottom: 1px;
 }
-
 .instruction p {
   font-size: 13.5px;
   font-weight: 600;
   line-height: 1.4;
 }
-
 .welcome-body {
   position: relative;
   height: calc(100% - 138px);
   padding-top: 112px;
   text-align: center;
 }
-
 .welcome-body::after {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 311px;
+  left: 0; right: 0; top: 311px;
   height: 1px;
   background: #e6eff6;
 }
-
 .welcome-body h2 {
   font-size: 29.9px;
   font-weight: 700;
-  letter-spacing: -0.1px;
+  letter-spacing: -.1px;
 }
-
 .welcome-body p {
   width: 760px;
   margin: 38px auto 0;
@@ -291,377 +258,122 @@ button {
   line-height: 35px;
 }
 
-.robot {
-  position: absolute;
-  display: block;
-  pointer-events: none;
-  user-select: none;
-}
-
+.robot { position: absolute; display: block; pointer-events: none; user-select: none; }
 .robot-welcome {
-  left: 37px;
-  top: 392px;
-  width: 315px;
-  height: auto;
-  filter: drop-shadow(0 8px 10px rgba(0, 40, 80, 0.18));
+  left: 37px; top: 392px;
+  width: 315px; height: auto;
+  filter: drop-shadow(0 8px 10px rgba(0, 40, 80, .18));
   z-index: 2;
 }
 
 /* ===== Tombol Mulai Misi ===== */
 .btn-start {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 277px;
-  height: 65px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  width: 277px; height: 65px;
   background: var(--yellow);
   color: var(--navy);
   font-size: 24px;
   font-weight: 800;
   border-radius: 40px;
-  box-shadow: 0 4px 0 #e8b64a, 0 8px 16px rgba(20, 70, 110, 0.2);
-  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  box-shadow: 0 4px 0 #e8b64a, 0 8px 16px rgba(20, 70, 110, .2);
+  transition: transform .15s, box-shadow .15s, background .15s;
 }
-
-.btn-start:hover {
-  background: #ffdb85;
-  transform: translateY(-2px);
-}
-
-.btn-start:active {
-  transform: translateY(2px);
-  box-shadow: 0 1px 0 #e8b64a;
-}
-
-.btn-start:focus-visible {
-  outline: 3px solid var(--navy);
-  outline-offset: 2px;
-}
-
+.btn-start:hover { background: #ffdb85; transform: translateY(-2px); }
+.btn-start:active { transform: translateY(2px); box-shadow: 0 1px 0 #e8b64a; }
 .btn-start-welcome {
   position: absolute;
-  left: 1063px;
-  top: 801px;
+  left: 1063px; top: 801px;
   width: 277px;
-}
-
-.btn-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 22px;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: inherit;
-  color: var(--navy);
-  background: #fff;
-  border: 2px solid var(--sky-border);
-  border-radius: 8px;
-  transition: all 0.15s;
-}
-
-.btn-back:hover {
-  background: var(--panel);
-  border-color: var(--teal);
-}
-
-.btn-back:focus-visible {
-  outline: 3px solid var(--navy);
-  outline-offset: 2px;
-}
-
-.btn-back-welcome {
-  position: absolute;
-  left: 740px;
-  top: 801px;
-}
-
-.btn-back-mode {
-  position: absolute;
-  left: 50%;
-  top: 750px;
-  transform: translateX(-50%);
 }
 
 /* ===== Layar pilih mode ===== */
 .robot-mode {
-  left: 199px;
-  top: 86px;
-  width: 315px;
-  height: auto;
+  left: 199px; top: 86px;
+  width: 315px; height: auto;
   z-index: 1;
 }
 
 .bubble {
   position: absolute;
-  left: 490px;
-  top: 164px;
-  width: 661px;
-  height: 98px;
+  left: 490px; top: 164px;
+  width: 661px; height: 98px;
   padding: 22px 27px 0;
   background: #fff;
   border: 3px solid var(--sky-border);
   border-radius: 18px;
-  box-shadow: 0 6px 18px rgba(20, 90, 130, 0.14);
+  box-shadow: 0 6px 18px rgba(20, 90, 130, .14);
   z-index: 2;
 }
-
-.bubble h2 {
-  font-size: 21.9px;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.bubble p {
-  font-size: 18.2px;
-  font-weight: 500;
-  line-height: 1.25;
-  margin-top: 4px;
-  white-space: nowrap;
-}
+.bubble h2 { font-size: 21.9px; font-weight: 800; line-height: 1.2; }
+.bubble p { font-size: 18.2px; font-weight: 500; line-height: 1.25; margin-top: 4px; white-space: nowrap; }
 
 .mode-card {
   position: absolute;
   top: 367px;
-  width: 442px;
-  height: 411px;
+  width: 442px; height: 411px;
   background: var(--panel);
   border: 3px solid var(--sky-border);
   border-radius: 6px;
-  box-shadow: 0 10px 28px rgba(20, 90, 130, 0.22);
+  box-shadow: 0 10px 28px rgba(20, 90, 130, .22);
   z-index: 3;
   text-align: center;
 }
-
-.mode-binary {
-  left: 267px;
-}
-
-.mode-kelompokkan {
-  left: 758px;
-}
+.mode-binary { left: 267px; }
+.mode-multi  { left: 758px; }
 
 .pill {
   position: absolute;
-  top: 38px;
-  left: 50%;
+  top: 38px; left: 50%;
   transform: translateX(-50%);
   height: 49px;
   padding: 0 12px;
-  display: grid;
-  place-items: center;
+  display: grid; place-items: center;
   background: #a7e5f3;
   border-radius: 8px;
   font-size: 21.8px;
   font-weight: 800;
   white-space: nowrap;
 }
-
 .mode-desc {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 94px;
+  left: 0; right: 0; top: 94px;
   font-size: 14.2px;
   font-weight: 500;
   line-height: 23px;
 }
-
-.mode-kelompokkan .mode-desc {
-  top: 96px;
-}
+.mode-multi .mode-desc { top: 96px; }
 
 .mode-art {
   position: absolute;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  left: 0; right: 0;
+  display: flex; align-items: center; justify-content: center;
 }
+.mode-art img { display: block; object-fit: contain; }
 
-.mode-art img {
-  display: block;
-  object-fit: contain;
-}
-
-.mode-art-binary {
-  top: 145px;
-  height: 130px;
-  gap: 0;
-}
-
-.mode-art-binary img {
-  width: 130px;
-  height: 130px;
-}
-
+.mode-art-binary { top: 145px; height: 130px; gap: 0; }
+.mode-art-binary img { width: 130px; height: 130px; }
 .mode-art-binary .vline {
-  width: 2px;
-  height: 126px;
+  width: 2px; height: 126px;
   margin: 0 8px 0 19px;
-  background: var(--sky-border);
+  background: #a6dff0;
 }
+.mode-art-binary img:first-child { margin-left: -7px; }
 
-.mode-art-binary img:first-child {
-  margin-left: -7px;
-}
-
-.mode-art-kelompokkan {
-  top: 185px;
-  height: 76px;
-}
-
-.mode-art-kelompokkan img {
-  width: 76px;
-  height: 76px;
-  margin: 0 -2px;
-}
+.mode-art-multi { top: 185px; height: 76px; }
+.mode-art-multi img { width: 76px; height: 76px; margin: 0 -2px; }
 
 .mode-card .btn-start {
   position: absolute;
-  left: 50%;
-  top: 304px;
+  left: 50%; top: 304px;
   transform: translateX(-50%);
 }
+.mode-card .btn-start:hover { transform: translate(-50%, -2px); }
+.mode-card .btn-start:active { transform: translate(-50%, 2px); }
 
-.mode-card .btn-start:hover {
-  transform: translate(-50%, -2px);
-}
-
-.mode-card .btn-start:active {
-  transform: translate(-50%, 2px);
-}
-
-/* Badge terpilih */
-.mode-select-badge {
-  display: none;
-  position: absolute;
-  left: 50%;
-  top: 232px;
-  transform: translateX(-50%);
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #2e7d32;
-  background-color: #eaf2eb;
-  padding: 4px 10px;
-  border-radius: 999px;
-}
-
-.mode-card--selected .mode-select-badge {
-  display: inline-flex;
-}
-
-/* ===== Dialog Keluar Misi ===== */
-.overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(8, 43, 69, 0.45);
-}
-
-.overlay--open {
-  display: flex;
-}
-
-.dialog {
-  background-color: #f4f9ff;
-  border: 1px solid #d6e6f2;
-  border-radius: 10px;
-  padding: 32px;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(20, 90, 130, 0.22);
-}
-
-.dialog__title {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--navy);
-  margin: 0 0 12px;
-}
-
-.dialog__desc {
-  font-size: 14px;
-  color: var(--navy);
-  margin: 0 0 28px;
-  line-height: 1.5;
-}
-
-.dialog__actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-}
-
-/* Tombol dialog */
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 22px;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: inherit;
-  color: var(--navy);
-  background: #fff;
-  border: 2px solid var(--sky-border);
-  border-radius: 8px;
-  transition: all 0.15s;
-}
-
-.btn-ghost:hover {
-  background: var(--panel);
-  border-color: var(--teal);
-}
-
-.btn-ghost:focus-visible {
-  outline: 3px solid var(--navy);
-  outline-offset: 2px;
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 24px;
-  font-size: 14px;
-  font-weight: 800;
-  font-family: inherit;
-  color: #fff;
-  background: var(--teal);
-  border: none;
-  border-radius: 8px;
-  transition: background 0.15s, transform 0.15s;
-}
-
-.btn-primary:hover {
-  background: #0f7399;
-}
-
-.btn-primary:active {
-  transform: scale(0.97);
-}
-
-.btn-primary:focus-visible {
-  outline: 3px solid var(--navy);
-  outline-offset: 2px;
-}
-
-/* ===== Toast feedback ===== */
+/* ===== Toast ===== */
 .toast {
   position: absolute;
-  left: 50%;
-  bottom: 36px;
+  left: 50%; bottom: 36px;
   transform: translate(-50%, 20px);
   padding: 12px 22px;
   background: var(--navy);
@@ -671,81 +383,94 @@ button {
   border-radius: 999px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s, transform 0.25s;
+  transition: opacity .25s, transform .25s;
   z-index: 50;
 }
-
-.toast.is-on {
-  opacity: 1;
-  transform: translate(-50%, 0);
-}
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 
 /* ===== Animasi masuk ===== */
 @keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(26px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
 }
-
 @keyframes robotIn {
-  from {
-    opacity: 0;
-    transform: translateX(-60px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateX(-60px); }
+  to   { opacity: 1; transform: none; }
 }
-
 @keyframes bob {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
 }
 
 .screen.is-visible .welcome-panel,
 .screen.is-visible .bubble,
-.screen.is-visible .mode-card {
-  animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.3, 1) both;
-}
+.screen.is-visible .mode-card { animation: rise .55s cubic-bezier(.2, .8, .3, 1) both; }
+.screen.is-visible .mode-multi { animation-delay: .1s; }
+.screen.is-visible .robot { animation: robotIn .6s cubic-bezier(.2, .8, .3, 1) .1s both; }
+.screen.is-visible .btn-start-welcome { animation: rise .55s .25s both; }
 
-.screen.is-visible .mode-kelompokkan {
-  animation-delay: 0.1s;
+/* ===== Modal Dialog Keluar ===== */
+.modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 37, 64, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 50;
 }
-
-.screen.is-visible .robot {
-  animation: robotIn 0.6s cubic-bezier(0.2, 0.8, 0.3, 1) 0.1s both;
+.modal[hidden] {
+  display: none;
 }
-
-.screen.is-visible .btn-start-intro,
-.screen.is-visible .btn-start-welcome {
-  animation: rise 0.55s 0.25s both;
+.modal-box {
+  width: 520px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 34px 36px 30px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  animation: rise 0.3s;
+}
+.modal-box h3 {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--navy-400, #082b45);
+}
+.modal-box p {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 12px 0 26px;
+  color: var(--navy-200, #345e7d);
+  line-height: 1.45;
+}
+.modal-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+.m-btn {
+  height: 48px;
+  padding: 0 28px;
+  border-radius: 24px;
+  background: var(--teal, #118ab2);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  border: 0;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.m-btn:hover {
+  filter: brightness(1.08);
+}
+.m-btn.ghost {
+  background: #eef5fa;
+  color: var(--navy, #0b3d62);
+  border: 2px solid #c9e0ee;
+}
+.m-btn.ghost:hover {
+  background: #e2eff7;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .screen,
-  .screen * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-/* ===== Responsivitas (scale-based, stage 1400×998) ===== */
-@media (max-width: 1400px) {
-  .stage {
-    transform: scale(calc(100vw / 1400));
-    transform-origin: top center;
-    width: 1400px;
-    height: 998px;
-  }
+  .screen, .screen * { animation: none !important; transition: none !important; }
 }
