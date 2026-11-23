@@ -12,6 +12,7 @@
   var stepper = document.getElementById("stepper");
   var toast = document.getElementById("toast");
   var screens = {
+    intro: document.getElementById("screen-intro"),
     welcome: document.getElementById("screen-welcome"),
     mode: document.getElementById("screen-mode"),
   };
