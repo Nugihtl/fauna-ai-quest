@@ -1,8 +1,15 @@
 /* ==========================================================================
-   Fauna Quest — Opening styles (disesuaikan dengan referensi Figma 1400×998)
+   Fauna Quest — Opening styles (persis dengan referensi folder Downloads)
+   Aset yang sudah ada di repo (landscape.png, fauna.png, logo.svg, Nunito TTF)
+   dipertahankan; aset yang belum ada di repo (ilustrasi mode) diambil dari folder Downloads.
    ========================================================================== */
 
 :root {
+  --navy: #0d3b66;
+  --teal: #1488b5;
+  --yellow: #ffd166;
+  --sky-border: #a6dff0;
+  --panel: #f4f9ff;
   --stage-w: 1400px;
   --stage-h: 998px;
 }
@@ -17,7 +24,7 @@ html,
 body {
   height: 100%;
   font-family: var(--font-family);
-  color: var(--color-text-primary);
+  color: var(--navy);
   background: #cfeaf8;
   overflow: hidden;
 }
@@ -34,7 +41,7 @@ button {
   inset: 0;
   display: grid;
   place-items: center;
-  background: #d3ecfa;
+  background: linear-gradient(#bfe3f5, #1a8fba);
 }
 
 .stage {
@@ -44,7 +51,7 @@ button {
   flex: none;
   overflow: hidden;
   transform-origin: center center;
-  background: transparent;
+  background: #d3ecfa;
 }
 
 .scene-bg {
@@ -89,7 +96,7 @@ button {
   font-size: 19px;
   font-weight: 800;
   letter-spacing: 0.1px;
-  color: var(--color-text-primary);
+  color: var(--navy);
 }
 
 .stepper {
@@ -136,16 +143,16 @@ button {
   height: 36px;
   margin-left: -1px;
   margin-right: 19.6px;
-  background: var(--yellow-300);
-  border-color: var(--yellow-300);
-  color: var(--color-text-primary);
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--navy);
   font-size: 13px;
   box-shadow: 0 2px 6px rgba(255, 190, 60, 0.45);
 }
 
 .step.is-done {
-  background: var(--blue-200);
-  border-color: var(--blue-200);
+  background: var(--teal);
+  border-color: var(--teal);
   color: #fff;
 }
 
@@ -158,7 +165,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--blue-100);
+  background: var(--teal);
   color: #fff;
   font-size: 13px;
   font-weight: 800;
@@ -175,7 +182,7 @@ button {
 }
 
 .btn-exit:focus-visible {
-  outline: 3px solid var(--color-brand);
+  outline: 3px solid var(--navy);
   outline-offset: 2px;
 }
 
@@ -197,13 +204,19 @@ button {
   transition: opacity 0.45s ease;
 }
 
-/* Koordinat di bawah mengikuti frame Figma; di-offset -65px karena .screen mulai di bawah header */
+/* ===== Layar 1: Intro (background + tombol Mulai Misi) ===== */
+.btn-start-intro {
+  position: absolute;
+  left: 1063px;
+  top: 801px;
+  width: 277px;
+}
 
 /* ===== Panel sambutan ===== */
 .panel {
   position: absolute;
-  background: var(--neutral-300);
-  border: 3px solid var(--cyan-200);
+  background: var(--panel);
+  border: 3px solid var(--sky-border);
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(20, 90, 130, 0.22);
 }
@@ -214,6 +227,7 @@ button {
   width: 1113px;
   height: 598px;
   overflow: hidden;
+  background: #f4f9ff;
 }
 
 .welcome-panel h1 {
@@ -240,7 +254,7 @@ button {
   font-size: 11.5px;
   font-weight: 800;
   letter-spacing: 0.6px;
-  color: var(--blue-200);
+  color: var(--teal);
   margin-bottom: 1px;
 }
 
@@ -305,8 +319,8 @@ button {
   gap: 10px;
   width: 277px;
   height: 65px;
-  background: var(--yellow-300);
-  color: var(--color-text-primary);
+  background: var(--yellow);
+  color: var(--navy);
   font-size: 24px;
   font-weight: 800;
   border-radius: 40px;
@@ -325,15 +339,8 @@ button {
 }
 
 .btn-start:focus-visible {
-  outline: 3px solid var(--color-brand);
+  outline: 3px solid var(--navy);
   outline-offset: 2px;
-}
-
-.btn-start-intro {
-  position: absolute;
-  left: 1063px;
-  top: 801px;
-  width: 277px;
 }
 
 .btn-start-welcome {
@@ -348,23 +355,23 @@ button {
   align-items: center;
   gap: 6px;
   padding: 10px 22px;
-  font-size: var(--text-body-default);
-  font-weight: var(--fw-medium);
+  font-size: 14px;
+  font-weight: 600;
   font-family: inherit;
-  color: var(--color-text-muted);
-  background: transparent;
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-full);
-  transition: all var(--transition-fast);
+  color: var(--navy);
+  background: #fff;
+  border: 2px solid var(--sky-border);
+  border-radius: 8px;
+  transition: all 0.15s;
 }
 
 .btn-back:hover {
-  border-color: var(--color-brand);
-  color: var(--color-brand);
+  background: var(--panel);
+  border-color: var(--teal);
 }
 
 .btn-back:focus-visible {
-  outline: 3px solid var(--color-brand);
+  outline: 3px solid var(--navy);
   outline-offset: 2px;
 }
 
@@ -398,7 +405,7 @@ button {
   height: 98px;
   padding: 22px 27px 0;
   background: #fff;
-  border: 3px solid var(--cyan-200);
+  border: 3px solid var(--sky-border);
   border-radius: 18px;
   box-shadow: 0 6px 18px rgba(20, 90, 130, 0.14);
   z-index: 2;
@@ -423,8 +430,8 @@ button {
   top: 367px;
   width: 442px;
   height: 411px;
-  background: var(--neutral-300);
-  border: 3px solid var(--cyan-200);
+  background: var(--panel);
+  border: 3px solid var(--sky-border);
   border-radius: 6px;
   box-shadow: 0 10px 28px rgba(20, 90, 130, 0.22);
   z-index: 3;
@@ -498,7 +505,7 @@ button {
   width: 2px;
   height: 126px;
   margin: 0 8px 0 19px;
-  background: var(--cyan-200);
+  background: var(--sky-border);
 }
 
 .mode-art-binary img:first-child {
@@ -540,19 +547,19 @@ button {
   transform: translateX(-50%);
   align-items: center;
   gap: 6px;
-  font-size: var(--text-caption);
-  font-weight: var(--fw-semibold);
-  color: var(--color-success);
-  background-color: var(--color-success-bg);
+  font-size: 12px;
+  font-weight: 700;
+  color: #2e7d32;
+  background-color: #eaf2eb;
   padding: 4px 10px;
-  border-radius: var(--radius-full);
+  border-radius: 999px;
 }
 
 .mode-card--selected .mode-select-badge {
   display: inline-flex;
 }
 
-/* ===== Exit confirmation dialog ===== */
+/* ===== Dialog Keluar Misi ===== */
 .overlay {
   position: fixed;
   inset: 0;
@@ -569,34 +576,89 @@ button {
 }
 
 .dialog {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  background-color: #f4f9ff;
+  border: 1px solid #d6e6f2;
+  border-radius: 10px;
   padding: 32px;
   max-width: 420px;
   width: 100%;
   text-align: center;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 30px rgba(20, 90, 130, 0.22);
 }
 
 .dialog__title {
-  font-size: var(--text-heading-h2);
-  font-weight: var(--fw-bold);
-  color: var(--color-text-primary);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy);
   margin: 0 0 12px;
 }
 
 .dialog__desc {
-  font-size: var(--text-body-default);
-  color: var(--color-text-secondary);
+  font-size: 14px;
+  color: var(--navy);
   margin: 0 0 28px;
-  line-height: var(--line-body);
+  line-height: 1.5;
 }
 
 .dialog__actions {
   display: flex;
   gap: 12px;
   justify-content: center;
+}
+
+/* Tombol dialog */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--navy);
+  background: #fff;
+  border: 2px solid var(--sky-border);
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.btn-ghost:hover {
+  background: var(--panel);
+  border-color: var(--teal);
+}
+
+.btn-ghost:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: inherit;
+  color: #fff;
+  background: var(--teal);
+  border: none;
+  border-radius: 8px;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.btn-primary:hover {
+  background: #0f7399;
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.btn-primary:focus-visible {
+  outline: 3px solid var(--navy);
+  outline-offset: 2px;
 }
 
 /* ===== Toast feedback ===== */
@@ -606,7 +668,7 @@ button {
   bottom: 36px;
   transform: translate(-50%, 20px);
   padding: 12px 22px;
-  background: var(--color-text-primary);
+  background: var(--navy);
   color: #fff;
   font-size: 15px;
   font-weight: 700;

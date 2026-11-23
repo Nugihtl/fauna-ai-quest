@@ -29,13 +29,9 @@
         <button class="btn-exit" id="btnExit" type="button">Keluar Misi</button>
       </header>
 
-      <!-- ============ LAYAR 1: INTRO (latar saja) ============ -->
+      <!-- ============ LAYAR 1: INTRO (latar saja + tombol Mulai Misi) ============ -->
       <section class="screen" id="screen-intro" aria-hidden="true">
-        <div class="intro-content">
-          <h1 class="intro-title">Fauna AI Quest</h1>
-          <p class="intro-sub">Mulai misi mengenali dunia hewan vertebrata.</p>
-          <button class="btn-start btn-start-intro" id="btnStart" type="button">Mulai Misi</button>
-        </div>
+        <button class="btn-start btn-start-intro" id="btnStart" type="button">Mulai Misi</button>
       </section>
 
       <!-- ============ LAYAR 2: SELAMAT DATANG ============ -->
