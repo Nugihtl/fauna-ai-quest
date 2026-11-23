@@ -212,22 +212,18 @@ button {
   width: 277px;
 }
 
-/* ===== Panel sambutan — persis sesuai referensi ===== */
-.panel {
-  position: absolute;
-  background: var(--panel);
-  border: 3px solid var(--sky-border);
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(20, 90, 130, 0.22);
-}
-
+/* ===== Panel sambutan — satu kelas tunggal, tidak ada double background/border ===== */
 .welcome-panel {
+  position: absolute;
   left: 144px;
   top: 135px;
   width: 1113px;
   height: 598px;
   overflow: hidden;
   background: #f4f9ff;
+  border: 3px solid #a6dff0;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(20, 90, 130, 0.22);
 }
 
 .welcome-panel h1 {

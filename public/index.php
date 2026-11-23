@@ -36,7 +36,7 @@
 
       <!-- ============ LAYAR 2: SELAMAT DATANG ============ -->
       <section class="screen" id="screen-welcome" aria-labelledby="welcomeTitle" aria-hidden="true">
-        <article class="panel welcome-panel">
+        <article class="welcome-panel">
           <h1 id="welcomeTitle">Selamat Datang di Misi Fauna AI!</h1>
           <div class="instruction">
             <span class="instruction-label">PETUNJUK AKTIVITAS</span>
