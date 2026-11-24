@@ -1,0 +1,174 @@
+/* ==========================================================
+   Fauna AI Quest — Pop-up Modal CSS
+   Dibangun pada kanvas 1568 × 690, diskalakan lewat variabel --s
+   ========================================================== */
+
+.fauna-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 37, 64, 0.55);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+  backdrop-filter: blur(2px);
+}
+
+.fauna-modal[hidden] {
+  display: none !important;
+}
+
+.dlg-wrap {
+  position: relative;
+  width: calc(1568px * var(--s, 0.52));
+  height: calc(690px * var(--s, 0.52));
+  animation: dlgIn 0.35s cubic-bezier(0.3, 1.35, 0.5, 1) both;
+}
+
+@keyframes dlgIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.dlg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1568px;
+  height: 690px;
+  transform: scale(var(--s, 0.52));
+  transform-origin: 0 0;
+  color: var(--navy-300, #0b3c5d);
+}
+
+.dlg-card {
+  position: absolute;
+  left: 52px;
+  top: 32px;
+  width: 1465px;
+  height: 586px;
+  background: #dff3fd;
+  border: 5px solid var(--cyan-100, #a9e3f2);
+  border-radius: 30px;
+  box-shadow: 0 22px 50px rgba(30, 100, 140, 0.28);
+  overflow: hidden;
+}
+
+.dlg-card svg.decor {
+  position: absolute;
+  left: -57px;
+  top: -37px;
+  width: 1568px;
+  height: 690px;
+  pointer-events: none;
+}
+
+.dlg .robot-wrap {
+  position: absolute;
+  left: 105px;
+  top: 112px;
+}
+
+.dlg .robot-wrap svg {
+  display: block;
+  overflow: visible;
+}
+
+.dlg-title {
+  position: absolute;
+  left: 560px;
+  width: 850px;
+  top: 146px;
+  text-align: center;
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 84px;
+  white-space: nowrap;
+  color: var(--navy-400, #082b45);
+  margin: 0;
+}
+
+.dlg-text {
+  position: absolute;
+  left: 520px;
+  width: 930px;
+  top: 254px;
+  text-align: center;
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 62px;
+  white-space: nowrap;
+  color: var(--navy-300, #0b3c5d);
+  margin: 0;
+}
+
+.dlg-actions {
+  position: absolute;
+  left: 574px;
+  width: 822px;
+  top: 447px;
+  display: flex;
+  justify-content: center;
+  gap: 81px;
+}
+
+.dlg-btn {
+  width: 369px;
+  height: 87px;
+  border-radius: 44px;
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1;
+  font-family: inherit;
+  cursor: pointer;
+  background: var(--blue-300, #1089b4);
+  color: #fff;
+  border: 3px solid var(--blue-300, #1089b4);
+  transition: 0.18s;
+  display: grid;
+  place-items: center;
+}
+
+.dlg-btn.ghost {
+  background: #f3f8ff;
+  color: var(--navy-300, #0b3c5d);
+  border-color: var(--navy-300, #0b3c5d);
+}
+
+.dlg-btn:hover {
+  transform: translateY(-4px);
+  filter: brightness(1.06);
+  box-shadow: 0 12px 20px rgba(0, 60, 100, 0.22);
+}
+
+.dlg-close {
+  position: absolute;
+  left: 1417px;
+  top: 54px;
+  width: 75px;
+  height: 75px;
+  border: 0;
+  border-radius: 17px;
+  background: #a8d6e8;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: 0.18s;
+}
+
+.dlg-close:hover {
+  background: #94c8de;
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dlg-wrap {
+    animation: none;
+  }
+}

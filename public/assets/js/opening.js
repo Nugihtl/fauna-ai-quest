@@ -70,13 +70,25 @@
     });
   }
 
+  /* ---------- Keluar Misi (Pop-up Konfirmasi) ---------- */
+  function handleExit() {
+    if (window.FaunaDialog) {
+      window.FaunaDialog.confirmExit(function () {
+        document.dispatchEvent(new CustomEvent("fauna:exit"));
+        document.querySelectorAll('.screen[id^="s-"], .screen[id^="mc-"]').forEach(function (s) {
+          s.classList.remove("is-visible", "active");
+        });
+        show("intro");
+        setTimeout(function () { show("welcome"); }, 900);
+      });
+    } else if (exitModal) {
+      exitModal.removeAttribute("hidden");
+    }
+  }
+
   var btnExit = document.getElementById("btnExit");
   if (btnExit) {
-    btnExit.addEventListener("click", function () {
-      if (exitModal) {
-        exitModal.removeAttribute("hidden");
-      }
-    });
+    btnExit.addEventListener("click", handleExit);
   }
 
   if (modalCancel) {
