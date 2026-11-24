@@ -1,0 +1,260 @@
+/* ==========================================================
+   Fauna AI Quest — Multiclass (Kelompokkan) CSS
+   Menggunakan design tokens dari tokens.css & font lokal Nunito
+   ========================================================== */
+
+/* ---------- Title Banner ---------- */
+.title-banner.mc {
+  left: 317px;
+  top: 175px;
+  width: 483px;
+}
+
+/* ---------- Layar 2: Intro (Kenali Hewan Vertebrata) ---------- */
+.intro-panel {
+  left: 127px;
+  top: 310px;
+  width: 1186px;
+  height: 521px;
+  padding: 60px 28px 0;
+  z-index: 5;
+}
+
+.intro-panel h1 {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--navy-400);
+}
+
+.intro-panel .lead {
+  font-size: 19.5px;
+  font-weight: 600;
+  color: var(--navy-300);
+  margin-top: 6px;
+}
+
+.intro-panel .group-grid {
+  position: absolute;
+  left: 25px;
+  top: 149px;
+  display: grid;
+  grid-template-columns: repeat(5, 214px);
+  gap: 15px;
+}
+
+.intro-panel .group-card {
+  cursor: default;
+}
+
+.intro-panel .group-card:hover {
+  transform: none;
+  border-color: var(--cyan-75);
+  box-shadow: 0 3px 8px rgba(11, 60, 93, 0.08);
+}
+
+/* ---------- Layar 3: Mengajari Fauna (5 Kelompok) ---------- */
+.q-bubble {
+  position: absolute;
+  left: 337px;
+  top: 152px;
+  width: 961px;
+  height: 102px;
+  padding: 18px 28px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 6;
+}
+
+.q-bubble strong {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--navy-400);
+}
+
+.q-bubble span {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--navy-200);
+  margin-top: 4px;
+}
+
+.q-count {
+  position: absolute;
+  right: 11px;
+  top: 11px;
+  width: 62px;
+  height: 35px;
+  border-radius: 7px;
+  background: rgba(170, 225, 240, 0.85);
+  color: #3a8aa8;
+  font-style: normal;
+  font-size: 19px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+
+.teach-panel {
+  position: absolute;
+  left: 144px;
+  top: 287px;
+  width: 1152px;
+  height: 564px;
+  z-index: 5;
+}
+
+.q-image {
+  position: absolute;
+  left: 247px;
+  top: 45px;
+  width: 652px;
+  height: 365px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(0, 50, 90, 0.2);
+  background: var(--blue-50);
+}
+
+.q-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.35s, transform 0.45s;
+}
+
+.q-image img.swap {
+  opacity: 0;
+  transform: scale(1.03);
+}
+
+.choices {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 459px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.choice {
+  width: 140px;
+  height: 50px;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  border: 2px solid var(--cyan-100);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy-400);
+  cursor: pointer;
+  transition: 0.18s;
+  font-family: inherit;
+}
+
+.choice:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 14px rgba(0, 50, 90, 0.18);
+  border-color: var(--cyan-300);
+}
+
+.choice.sel {
+  background: var(--navy-300);
+  border-color: var(--navy-300);
+  color: #fff;
+  transform: none;
+  box-shadow: 0 4px 12px rgba(11, 61, 98, 0.25);
+}
+
+/* ---------- Layar 4 & 6: Pemindai (Class Chip & Caption) ---------- */
+.class-chip {
+  position: absolute;
+  left: 651px;
+  top: 783px;
+  width: 139px;
+  height: 50px;
+  border-radius: 5px;
+  background: var(--blue-400);
+  border: 2px solid var(--blue-300);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  z-index: 4;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: 0.3s;
+  box-shadow: 0 5px 12px rgba(0, 50, 90, 0.3);
+}
+
+.class-cap {
+  position: absolute;
+  left: 465px;
+  top: 833px;
+  width: 510px;
+  height: 45px;
+  border-radius: 5px;
+  background: #fff;
+  border: 2px solid var(--cyan-100);
+  color: var(--navy-400);
+  font-size: 17px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  z-index: 4;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: 0.3s 0.05s;
+}
+
+.class-chip.show,
+.class-cap.show {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Layar 5: Rekap Multiclass Tabs ---------- */
+.tabs.mc-tabs {
+  position: absolute;
+  left: 0;
+  top: 224px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.mc-tabs .tab {
+  height: 55px;
+  border-radius: 6px;
+  font-size: 22px;
+  font-weight: 800;
+  padding: 0 24px;
+  border: 2px solid var(--cyan-100);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--navy-100);
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: inherit;
+}
+
+.mc-tabs .tab:hover {
+  background: #fff;
+  color: var(--navy-300);
+  border-color: var(--cyan-300);
+}
+
+.mc-tabs .tab.active {
+  background: var(--blue-300);
+  border-color: var(--blue-400);
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(17, 138, 178, 0.25);
+}
+
+/* ---------- Tombol State Dim ---------- */
+.btn-next.dim {
+  opacity: 0.45;
+  pointer-events: none;
+}

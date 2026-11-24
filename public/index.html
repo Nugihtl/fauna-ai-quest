@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/opening.css">
   <link rel="stylesheet" href="assets/css/binary.css">
+  <link rel="stylesheet" href="assets/css/multiclass.css">
 </head>
 <body>
 
@@ -354,6 +355,133 @@
       <button type="button" class="btn-next wide" id="btn-retrain">Perbaiki dan Latih Ulang <span class="arrow">→</span></button>
     </section>
 
+    <!-- ============ ALUR GAMEPLAY: MULTICLASS (KELOMPOKKAN) ============ -->
+
+    <!-- Layar 2: Kenali 5 Kelompok Hewan -->
+    <section class="screen" id="mc-intro" data-step="2">
+      <div class="robot-slot" data-robot data-scale="0.56" style="left:116px;top:121px"></div>
+      <div class="title-banner mc">Kelompokkan</div>
+      <div class="panel intro-panel">
+        <h1>Kenali Hewan Vertebrata!</h1>
+        <p class="lead">Dalam misi ini, kamu akan membantu Fauna AI untuk mengklasifikasikan hewan vertebrata ke dalam 5 kelompok.</p>
+        <div class="group-grid" id="mc-group-grid"></div>
+      </div>
+      <button type="button" class="btn-yellow" data-mc-go="teach">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg>
+        Mulai Misi
+      </button>
+    </section>
+
+    <!-- Layar 3: Mengajari Fauna (5 Pilihan Kelompok) -->
+    <section class="screen" id="mc-teach" data-step="3">
+      <div class="robot-slot" data-robot data-scale="0.55" style="left:149px;top:102px"></div>
+      <div class="bubble q-bubble">
+        <strong>Hewan ini termasuk kelompok apa?</strong>
+        <span>Amati gambar, lalu pilih kelompok yang paling sesuai agar Fauna.AI bisa belajar dengan lebih baik.</span>
+        <em class="q-count" id="mc-q-count">1</em>
+      </div>
+      <div class="panel teach-panel">
+        <div class="q-image"><img id="mc-q-img" src="" alt=""></div>
+        <div class="choices" id="mc-choices"></div>
+      </div>
+      <button type="button" class="btn-back" id="mc-teach-back">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Kembali
+      </button>
+      <button type="button" class="btn-next dim" id="mc-teach-next">Lanjut <span class="arrow">→</span></button>
+    </section>
+
+    <!-- Layar 3b: Terima Kasih (Setelah Mengajari) -->
+    <section class="screen" id="mc-thanks" data-step="3">
+      <img class="mascot" src="assets/images/mascot/robot.webp" alt="Maskot Fauna AI" style="left:72px;top:393px;width:377px">
+      <div class="panel msg-panel">
+        <h2>Terima Kasih Sudah Mengajariku!</h2>
+        <p class="msg-main">Fauna AI sudah menerima semua contoh gambar dan jawaban yang kamu berikan. Semua jawabanmu akan kusimpan sebagai bahan belajarku!</p>
+        <p class="msg-sub">Yuk lihat bagaimana hasil dari jawabanmu!</p>
+      </div>
+      <button type="button" class="btn-yellow" data-mc-go="check">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg>
+        Mulai Analisis
+      </button>
+    </section>
+
+    <!-- Layar 4: Fauna Memeriksa Jawaban (Scanning Animasi) -->
+    <section class="screen scan-screen" id="mc-check" data-step="4">
+      <div class="beam"></div>
+      <div class="robot-slot" data-robot data-scale="1.02" style="left:556px;top:117px"></div>
+      <div class="scan-track"></div>
+      <div class="class-chip"></div>
+      <div class="class-cap"></div>
+      <button type="button" class="btn-next" data-mc-go="recap">Lanjut <span class="arrow">→</span></button>
+    </section>
+
+    <!-- Layar 5: Apa yang Sudah Dipelajari (Rekap Data 5 Kelompok) -->
+    <section class="screen" id="mc-recap" data-step="5">
+      <div class="panel recap-panel">
+        <div class="robot-slot" data-robot data-scale="0.475" style="left:30px;top:58px"></div>
+        <div class="bubble">
+          <strong>Yeay! Aku sudah belajar!</strong>
+          <span>Terima kasih sudah mengajariku! Sekarang aku akan menunjukkan apa saja yang sudah aku pelajari darimu.</span>
+        </div>
+        <div class="tabs mc-tabs" id="mc-tabs"></div>
+        <div class="thumb-grid" id="mc-thumb-grid"></div>
+        <div class="note"><b>Aku percaya semua jawabanmu!</b> Aku akan mengingat semua contoh yang kamu berikan, termasuk jika ada jawaban yang keliru.</div>
+      </div>
+      <button type="button" class="btn-back" data-mc-go="check">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Kembali
+      </button>
+      <button type="button" class="btn-next" data-mc-go="predictIntro">Lanjut <span class="arrow">→</span></button>
+    </section>
+
+    <!-- Layar 6a: Pengantar Pengujian Prediksi -->
+    <section class="screen" id="mc-predictIntro" data-step="6">
+      <img class="mascot" src="assets/images/mascot/robot.webp" alt="Maskot Fauna AI" style="left:72px;top:393px;width:377px">
+      <div class="panel msg-panel">
+        <h2>Saatnya Fauna AI Bekerja!</h2>
+        <p class="msg-main">Fauna AI akan mencoba mengenali gambar baru berdasarkan data yang sudah kamu ajarkan.</p>
+        <p class="msg-sub">Yuk lihat bagaimana Fauna AI mengklasifikasikan hewan</p>
+      </div>
+      <button type="button" class="btn-yellow" data-mc-go="predict">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 4l14 8-14 8z"/></svg>
+        Mulai Analisis
+      </button>
+    </section>
+
+    <!-- Layar 6b: Fauna Menebak (Pemindaian Prediksi) -->
+    <section class="screen scan-screen" id="mc-predict" data-step="6">
+      <div class="beam"></div>
+      <div class="robot-slot" data-robot data-scale="1.02" style="left:556px;top:117px"></div>
+      <div class="scan-track"></div>
+      <div class="class-chip"></div>
+      <div class="class-cap"></div>
+      <button type="button" class="btn-next" data-mc-go="results">Lanjut <span class="arrow">→</span></button>
+    </section>
+
+    <!-- Layar 7: Hasil Analisis & Refleksi Belajar -->
+    <section class="screen" id="mc-results" data-step="7">
+      <div class="panel result-panel">
+        <h2>Hasil Analisis Fauna AI!</h2>
+        <p class="result-sub" id="mc-result-sub"></p>
+        <div class="score-card">
+          <div class="score-value" id="mc-score-value">0%</div>
+          <div class="score-label">Akurasi Fauna</div>
+          <div class="score-chips">
+            <span class="chip chip-ok" id="mc-chip-ok"></span>
+            <span class="chip chip-bad" id="mc-chip-bad"></span>
+          </div>
+        </div>
+        <div class="result-row" id="mc-result-row"></div>
+        <div class="pager" id="mc-pager"></div>
+        <div class="reasons" id="mc-reasons"></div>
+      </div>
+      <button type="button" class="btn-back" data-mc-go="predict">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Kembali
+      </button>
+      <button type="button" class="btn-next wide" id="mc-btn-retrain">Perbaiki dan Latih Ulang <span class="arrow">→</span></button>
+    </section>
+
     <!-- Toast Notifikasi -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -374,5 +502,6 @@
 
 <script src="assets/js/opening.js"></script>
 <script src="assets/js/binary.js"></script>
+<script src="assets/js/multiclass.js"></script>
 </body>
 </html>

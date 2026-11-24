@@ -89,8 +89,8 @@
     modalOk.addEventListener("click", function () {
       if (exitModal) exitModal.setAttribute("hidden", "");
       document.dispatchEvent(new CustomEvent("fauna:exit"));
-      // Sembunyikan semua layar binary
-      document.querySelectorAll('.screen[id^="s-"]').forEach(function (s) {
+      // Sembunyikan semua layar binary dan multiclass
+      document.querySelectorAll('.screen[id^="s-"], .screen[id^="mc-"]').forEach(function (s) {
         s.classList.remove("is-visible", "active");
       });
       show("intro");
@@ -102,9 +102,6 @@
     btn.addEventListener("click", function () {
       var mode = btn.dataset.mode;
       document.dispatchEvent(new CustomEvent("fauna:mode", { detail: { mode: mode } }));
-      if (mode !== "binary") {
-        notify("Mode Kelompokkan sedang disiapkan.");
-      }
     });
   });
 
