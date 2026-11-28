@@ -84,7 +84,8 @@
   position: absolute;
   right: 11px;
   top: 11px;
-  width: 62px;
+  min-width: 62px;
+  padding: 0 10px;
   height: 35px;
   border-radius: 7px;
   background: rgba(170, 225, 240, 0.85);

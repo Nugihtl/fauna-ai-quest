@@ -1,97 +1,104 @@
 /* ==========================================================
-   Fauna AI Quest — Binary Klasifikasi Gameplay Engine
+   Fauna AI Quest — Mode Binary (Class Prototype Similarity)
+   - 5 kelas target aktif (Mamalia, Aves, Reptil, Amfibi, Pisces)
+   - 50 foto contoh (foto 1 & 2) diberi label Termasuk / Bukan [Target]
+   - 2 prototipe (target & not_target) dibentuk dari label siswa
+   - 25 foto uji (foto 3) diprediksi & dievaluasi terpisah
    ========================================================== */
 (function () {
   'use strict';
 
-  /* ---------- Data Hewan & Fitur Visual ---------- */
-  // f = [berbulu, di air, bersayap, bersisik, berkaki, kulit licin]
-  const ANIMALS = {
-    harimau:  { name: 'Harimau',          img: 'assets/images/animals/harimau.jpeg',  mammal: true,  f: [1, 0, 0, 0, 1, 0] },
-    lumba:    { name: 'Lumba-Lumba',      img: 'assets/images/animals/lumba.jpeg',    mammal: true,  f: [0, 1, 0, 0, 0, 1] },
-    sapi:     { name: 'Sapi',             img: 'assets/images/animals/sapi.jpeg',     mammal: true,  f: [1, 0, 0, 0, 1, 0] },
-    merpati:  { name: 'Merpati',          img: 'assets/images/animals/merpati.jpeg',  mammal: false, f: [0, 0, 1, 0, 0, 0] },
-    panda:    { name: 'Panda',            img: 'assets/images/animals/panda.jpeg',    mammal: true,  f: [1, 0, 0, 0, 1, 0] },
-    komodo:   { name: 'Komodo',           img: 'assets/images/animals/komodo.jpeg',   mammal: false, f: [0, 0, 0, 1, 1, 0] },
-    kucing:   { name: 'Kucing',           img: 'assets/images/animals/kucing.jpeg',   mammal: true,  f: [1, 0, 0, 0, 1, 0] },
-    katak:    { name: 'Katak',            img: 'assets/images/animals/katak.jpeg',    mammal: false, f: [0, 0.5, 0, 0, 1, 1] },
-    pesut:    { name: 'Pesut Sungai',     img: 'assets/images/animals/pesut.jpeg',    mammal: true,  f: [0, 1, 0, 0, 0, 1] },
-    penguin:  { name: 'Penguin',          img: 'assets/images/animals/penguin.jpeg',  mammal: false, f: [0, 0.5, 1, 0, 0, 0] },
-    kucingbw: { name: 'Kucing Belang',    img: 'assets/images/animals/kucingbw.jpeg', mammal: true,  f: [1, 0, 0, 0, 1, 0] },
-    kudalaut: { name: 'Kuda Laut',        img: 'assets/images/animals/kudalaut.jpeg', mammal: false, f: [0, 1, 0, 0.5, 0, 0] }
-  };
+  var FD = window.FaunaDataset;
+  var FF = window.FaunaFeatures;
+  var FS = window.FaunaSimilarity;
 
-  const TEACH_ORDER = ['harimau', 'lumba', 'sapi', 'merpati', 'panda', 'komodo', 'kucing', 'katak', 'pesut', 'penguin', 'kucingbw', 'kudalaut'];
-  const SCAN_ORDER  = ['harimau', 'sapi', 'panda', 'lumba', 'kucing', 'pesut', 'merpati', 'komodo', 'penguin', 'katak', 'kucingbw', 'kudalaut'];
+  if (!FD || !FF || !FS) {
+    console.error('FaunaDataset, FaunaFeatures, atau FaunaSimilarity belum dimuat.');
+    return;
+  }
 
-  const GROUPS = [
-    { id: 'mamalia', name: 'Mamalia', img: 'assets/images/animals/kucingbw.jpeg', desc: 'Memiliki rambut atau bulu dan menyusui anaknya.', ex: 'Contoh: Harimau, Kucing, Lumba-lumba', enabled: true },
-    { id: 'aves',    name: 'Aves',    img: 'assets/images/animals/penguin.jpeg',   desc: 'Memiliki bulu dan paruh.', ex: 'Contoh: Elang, Merpati, Penguin' },
-    { id: 'reptil',  name: 'Reptil',  img: 'assets/images/animals/komodo.jpeg',    desc: 'Umumnya memiliki kulit kering bersisik.', ex: 'Contoh: Penyu, Komodo, Iguana' },
-    { id: 'amfibi',  name: 'Amfibi',  img: 'assets/images/animals/katak.jpeg',     desc: 'Umumnya memiliki kulit lembap dan mengalami perubahan selama hidupnya.', ex: 'Contoh: Katak, Salamander' },
-    { id: 'pisces',  name: 'Pisces',  img: 'assets/images/animals/kudalaut.jpeg',  desc: 'Hewan vertebrata yang hidup di air dan bernapas menggunakan insang.', ex: 'Contoh: Ikan Mas, Hiu, Kuda Laut' }
-  ];
+  var CLASS_MAP = FD.getClassMap();
+  var SAMPLE_IMAGES = FD.getSampleImages(false); // tanpa classId
+  var TEST_IMAGES = FD.getTestImages(false);     // tanpa classId
 
-  /* ---------- State Gameplay ---------- */
-  const state = {
-    labels: {},        // id -> true (Mamalia) / false (Bukan Mamalia)
+  var state = {
+    targetClassId: 'mamalia',
+    labels: {},        // imageId -> 'target' | 'not_target'
     teachIndex: 0,
-    results: [],       // hasil prediksi Fauna AI
+    evaluation: null,  // hasil evaluasi lengkap setelah prediksi selesai
     page: 0,
     busy: false,
     active: false
   };
 
-  let scanToken = 0;
-  let currentScreen = '';
+  var scanToken = 0;
+  var currentScreen = '';
 
-  /* ---------- Helpers ---------- */
-  const $  = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-  const wait = ms => new Promise(r => setTimeout(r, ms));
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
 
   function toast(msg) {
-    const t = $('#toast');
+    var t = $('#toast');
     if (!t) return;
     t.textContent = msg;
     t.classList.add('is-on', 'show');
     clearTimeout(toast._t);
-    toast._t = setTimeout(() => {
+    toast._t = setTimeout(function () {
       t.classList.remove('is-on', 'show');
-    }, 2400);
+    }, 2800);
+  }
+
+  function targetName() {
+    var cls = CLASS_MAP[state.targetClassId];
+    return cls ? cls.name : 'Mamalia';
+  }
+
+  function updateTargetLabelsUI() {
+    var name = targetName();
+    var bYes = $('#btn-yes');
+    var bNo = $('#btn-no');
+    if (bYes) bYes.textContent = 'Termasuk ' + name;
+    if (bNo) bNo.textContent = 'Bukan ' + name;
+
+    var tYes = $('#s-recap .tab.is-yes');
+    var tNo = $('#s-recap .tab.is-no');
+    if (tYes) tYes.textContent = 'Termasuk ' + name;
+    if (tNo) tNo.textContent = 'Bukan ' + name;
   }
 
   /* ---------- Robot Fauna AI (SVG Beranimasi) ---------- */
-  function robotSVG(scale = 1) {
-    return `
-<svg class="robot" viewBox="0 0 320 310" width="${320 * scale}" height="${310 * scale}" aria-label="Fauna AI">
-  <ellipse cx="160" cy="288" rx="82" ry="22" fill="#f2f6f9" stroke="#d3dce4" stroke-width="1.5"/>
-  <circle cx="36" cy="152" r="22" fill="#6fd3ea"/><circle cx="284" cy="152" r="22" fill="#6fd3ea"/>
-  <rect x="26" y="128" width="16" height="50" rx="8" fill="#052540"/>
-  <rect x="278" y="128" width="16" height="50" rx="8" fill="#052540"/>
-  <path d="M27 92 L31 131" stroke="#9aa9b8" stroke-width="5" stroke-linecap="round"/>
-  <path d="M293 92 L289 131" stroke="#9aa9b8" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="25" cy="86" r="6" fill="#6fd3ea"/><circle cx="295" cy="86" r="6" fill="#6fd3ea"/>
-  <path d="M41 89 H279 V255 a20 20 0 0 1 -20 20 H61 a20 20 0 0 1 -20 -20 Z" fill="#e6ebef" stroke="#b3bfcb" stroke-width="1.5"/>
-  <rect x="60" y="112" width="201" height="96" rx="48" fill="#052540"/>
-  <circle cx="126" cy="150" r="11" fill="#6fd3ea"/><circle cx="192" cy="150" r="11" fill="#6fd3ea"/>
-  <path d="M144 171 Q160 190 177 171" stroke="#6fd3ea" stroke-width="6" stroke-linecap="round" fill="none"/>
-  <text x="160" y="248" text-anchor="middle" font-family="Nunito,system-ui,sans-serif" font-weight="800" font-size="17" fill="#0b2f4e">Fauna.AI</text>
-  <g class="dome"><path d="M41 89 A119 64 0 0 1 279 89 Z" fill="#e6ebef" stroke="#b3bfcb" stroke-width="1.5"/></g>
-</svg>`;
+  function robotSVG(scale) {
+    scale = scale || 1;
+    return (
+      '<svg class="robot" viewBox="0 0 320 310" width="' + (320 * scale) + '" height="' + (310 * scale) + '" aria-label="Fauna AI">' +
+      '<ellipse cx="160" cy="288" rx="82" ry="22" fill="#f2f6f9" stroke="#d3dce4" stroke-width="1.5"/>' +
+      '<circle cx="36" cy="152" r="22" fill="#6fd3ea"/><circle cx="284" cy="152" r="22" fill="#6fd3ea"/>' +
+      '<rect x="26" y="128" width="16" height="50" rx="8" fill="#052540"/>' +
+      '<rect x="278" y="128" width="16" height="50" rx="8" fill="#052540"/>' +
+      '<path d="M27 92 L31 131" stroke="#9aa9b8" stroke-width="5" stroke-linecap="round"/>' +
+      '<path d="M293 92 L289 131" stroke="#9aa9b8" stroke-width="5" stroke-linecap="round"/>' +
+      '<circle cx="25" cy="86" r="6" fill="#6fd3ea"/><circle cx="295" cy="86" r="6" fill="#6fd3ea"/>' +
+      '<path d="M41 89 H279 V255 a20 20 0 0 1 -20 20 H61 a20 20 0 0 1 -20 -20 Z" fill="#e6ebef" stroke="#b3bfcb" stroke-width="1.5"/>' +
+      '<rect x="60" y="112" width="201" height="96" rx="48" fill="#052540"/>' +
+      '<circle cx="126" cy="150" r="11" fill="#6fd3ea"/><circle cx="192" cy="150" r="11" fill="#6fd3ea"/>' +
+      '<path d="M144 171 Q160 190 177 171" stroke="#6fd3ea" stroke-width="6" stroke-linecap="round" fill="none"/>' +
+      '<text x="160" y="248" text-anchor="middle" font-family="Nunito,system-ui,sans-serif" font-weight="800" font-size="17" fill="#0b2f4e">Fauna.AI</text>' +
+      '<g class="dome"><path d="M41 89 A119 64 0 0 1 279 89 Z" fill="#e6ebef" stroke="#b3bfcb" stroke-width="1.5"/></g>' +
+      '</svg>'
+    );
   }
 
   function renderRobots() {
-    $$('[data-robot]').forEach(el => {
+    $$('[data-robot]').forEach(function (el) {
       el.innerHTML = robotSVG(parseFloat(el.dataset.scale || 1));
     });
-    const teachRobot = $('#teach-robot');
+    var teachRobot = $('#teach-robot');
     if (teachRobot) {
       teachRobot.innerHTML = robotSVG(1.2);
     }
   }
 
-  /* ---------- Stepper Integration ---------- */
   function updateStepper(step) {
     if (typeof window.renderFaunaStepper === 'function') {
       window.renderFaunaStepper(step);
@@ -99,29 +106,29 @@
   }
 
   /* ---------- Navigasi Antar Layar Binary ---------- */
-  function go(name) {
-    scanToken++; // Menghentikan scanning yang mungkin sedang berjalan
+  function go(name, opts) {
+    scanToken++;
     currentScreen = name;
 
-    // Sembunyikan layar opening jika masih terlihat
-    const welcome = $('#screen-welcome');
-    const mode = $('#screen-mode');
+    var welcome = $('#screen-welcome');
+    var mode = $('#screen-mode');
     if (welcome) welcome.classList.remove('is-visible', 'active');
     if (mode) mode.classList.remove('is-visible', 'active');
 
-    // Sembunyikan semua layar binary
-    $$('.screen[id^="s-"]').forEach(s => s.classList.remove('is-visible', 'active'));
+    $$('.screen[id^="s-"]').forEach(function (s) {
+      s.classList.remove('is-visible', 'active');
+    });
 
-    const el = $('#s-' + name);
+    var el = $('#s-' + name);
     if (!el) return;
 
     el.classList.add('is-visible', 'active');
-    const stepNum = parseInt(el.dataset.step, 10) || 2;
+    var stepNum = parseInt(el.dataset.step, 10) || 2;
     updateStepper(stepNum);
 
-    const initMap = {
+    var initMap = {
       pick: initPick,
-      teach: initTeach,
+      teach: function () { initTeach(opts && opts.keepLabels); },
       check: initCheck,
       recap: initRecap,
       predict: initPredict,
@@ -130,94 +137,128 @@
     if (initMap[name]) initMap[name]();
   }
 
-  /* ---------- Layar 2: Pilih Kelompok ---------- */
+  /* ---------- Layar 2: Pilih Kelas Target (5 Kelas Aktif) ---------- */
   function initPick() {
     state.busy = false;
-    $$('.group-card').forEach(c => c.classList.remove('selected'));
+    $$('#group-grid .group-card').forEach(function (c) { c.classList.remove('selected'); });
   }
 
   function setupPickGrid() {
-    const grid = $('#group-grid');
+    var grid = $('#group-grid');
     if (!grid) return;
-    grid.innerHTML = GROUPS.map(g => `
-      <button type="button" class="group-card" data-group="${g.id}">
-        <img src="${g.img}" alt="${g.name}">
-        <h3>${g.name}</h3>
-        <p>${g.desc}</p>
-        <div class="ex">${g.ex}</div>
-      </button>`).join('');
+    grid.innerHTML = FD.CLASSES.map(function (g) {
+      return (
+        '<button type="button" class="group-card" data-group="' + g.id + '">' +
+        '<img src="' + g.img + '" alt="' + g.name + '">' +
+        '<h3>' + g.name + '</h3>' +
+        '<p>' + g.desc + '</p>' +
+        '<div class="ex">' + g.ex + '</div>' +
+        '</button>'
+      );
+    }).join('');
 
-    grid.addEventListener('click', async e => {
-      const card = e.target.closest('.group-card');
+    grid.addEventListener('click', async function (e) {
+      var card = e.target.closest('.group-card');
       if (!card || state.busy) return;
-      const g = GROUPS.find(x => x.id === card.dataset.group);
-      $$('.group-card').forEach(c => c.classList.remove('selected'));
+      var clsId = card.dataset.group;
+      if (!CLASS_MAP[clsId]) return;
+
+      $$('#group-grid .group-card').forEach(function (c) { c.classList.remove('selected'); });
       card.classList.add('selected');
-      if (!g || !g.enabled) {
-        toast('Misi ini baru tersedia untuk kelompok Mamalia.');
-        return;
-      }
+
+      state.targetClassId = clsId;
+      state.labels = {};
+      state.teachIndex = 0;
+      state.evaluation = null;
+      updateTargetLabelsUI();
+
       state.busy = true;
-      await wait(450);
-      go('teach');
+      await wait(400);
+      go('teach', { keepLabels: false });
     });
   }
 
-  /* ---------- Layar 3: Mengajari Fauna ---------- */
-  const CARD_PITCH = 440;
+  /* ---------- Layar 3: Mengajari Fauna (50 Foto Contoh) ---------- */
+  var CARD_PITCH = 440;
 
-  function initTeach() {
-    state.labels = {};
-    state.teachIndex = 0;
+  function updateTeachCounter() {
+    var cnt = $('#learn-count');
+    if (cnt) {
+      var doneCount = Object.keys(state.labels).length;
+      cnt.textContent = doneCount + '/' + SAMPLE_IMAGES.length;
+    }
+  }
+
+  function initTeach(keepLabels) {
+    if (!keepLabels) {
+      state.labels = {};
+      state.teachIndex = 0;
+      state.evaluation = null;
+    } else if (state.teachIndex >= SAMPLE_IMAGES.length) {
+      state.teachIndex = SAMPLE_IMAGES.length - 1;
+    }
     state.busy = false;
-    const cnt = $('#learn-count');
-    if (cnt) cnt.textContent = '0';
-    const robot = $('#teach-robot .robot');
+    updateTargetLabelsUI();
+    updateTeachCounter();
+
+    var robot = $('#teach-robot .robot');
     if (robot) robot.classList.remove('open');
 
-    const track = $('#teach-track');
+    var track = $('#teach-track');
     if (track) {
-      track.innerHTML = TEACH_ORDER.map(id =>
-        `<div class="t-card"><img src="${ANIMALS[id].img}" alt="${ANIMALS[id].name}"><h3>${ANIMALS[id].name}</h3></div>`
-      ).join('');
+      track.innerHTML = SAMPLE_IMAGES.map(function (item) {
+        return (
+          '<div class="t-card">' +
+          '<img src="' + item.src + '" alt="' + item.displayName + '">' +
+          '<h3>' + item.displayName + ' <small style="font-weight:700;opacity:0.7">(Contoh ' + item.order + ')</small></h3>' +
+          '</div>'
+        );
+      }).join('');
     }
     layoutTeach();
-    const bYes = $('#btn-yes'), bNo = $('#btn-no');
+
+    var bYes = $('#btn-yes'), bNo = $('#btn-no');
     if (bYes && bNo) bYes.disabled = bNo.disabled = false;
   }
 
   function layoutTeach() {
-    $$('#teach-track .t-card').forEach((c, i) => {
-      const rel = i - state.teachIndex;
-      c.style.transform = `translateX(${rel * CARD_PITCH}px)`;
+    $$('#teach-track .t-card').forEach(function (c, i) {
+      var rel = i - state.teachIndex;
+      c.classList.remove('fly');
+      c.style.transform = 'translateX(' + (rel * CARD_PITCH) + 'px)';
       c.classList.toggle('hidden', rel < -1 || rel > 1);
     });
+
+    var currentItem = SAMPLE_IMAGES[state.teachIndex];
+    var currentLbl = currentItem ? state.labels[currentItem.id] : undefined;
+    var bYes = $('#btn-yes'), bNo = $('#btn-no');
+    if (bYes) bYes.classList.toggle('is-selected', currentLbl === 'target');
+    if (bNo) bNo.classList.toggle('is-selected', currentLbl === 'not_target');
   }
 
-  async function labelCurrent(isMammal) {
+  async function labelCurrent(isTarget) {
     if (state.busy) return;
-    const id = TEACH_ORDER[state.teachIndex];
-    if (!id) return;
+    var item = SAMPLE_IMAGES[state.teachIndex];
+    if (!item) return;
 
     state.busy = true;
-    state.labels[id] = isMammal;
-    const cards = $$('#teach-track .t-card');
-    const card = cards[state.teachIndex];
-    const robot = $('#teach-robot .robot');
+    state.labels[item.id] = isTarget ? 'target' : 'not_target';
+
+    var cards = $$('#teach-track .t-card');
+    var card = cards[state.teachIndex];
+    var robot = $('#teach-robot .robot');
 
     if (robot) robot.classList.add('open');
-
-    // Animasi kartu terbang menuju robot
     if (card) {
       card.classList.add('fly');
-      card.style.transform = `translate(${1090 - 86 - 100}px, -10px) scale(0.22)`;
+      card.style.transform = 'translate(' + (1090 - 86 - 100) + 'px, -10px) scale(0.22)';
     }
 
-    await wait(420);
+    await wait(320);
 
-    const cnt = $('#learn-count');
+    updateTeachCounter();
+    var cnt = $('#learn-count');
     if (cnt) {
-      cnt.textContent = Object.keys(state.labels).length;
       cnt.classList.remove('bump');
       void cnt.offsetWidth;
       cnt.classList.add('bump');
@@ -226,11 +267,18 @@
     state.teachIndex++;
     layoutTeach();
 
-    await wait(450);
+    await wait(320);
     if (robot) robot.classList.remove('open');
 
-    if (state.teachIndex >= TEACH_ORDER.length) {
-      await wait(450);
+    if (state.teachIndex >= SAMPLE_IMAGES.length) {
+      var done = Object.keys(state.labels).length;
+      if (done < SAMPLE_IMAGES.length) {
+        state.teachIndex = SAMPLE_IMAGES.findIndex(function (s) { return !state.labels[s.id]; });
+        layoutTeach();
+        state.busy = false;
+        return;
+      }
+      await wait(300);
       state.busy = false;
       go('thanks');
       return;
@@ -239,31 +287,36 @@
   }
 
   /* ---------- Pemindai / Scanner (Layar 4 & 6) ---------- */
-  const ICON_OK  = '<svg viewBox="0 0 24 24" width="50" height="50" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-  const ICON_BAD = '<svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#fff" stroke-width="3.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
-  const PITCH = 355;
+  var ICON_OK = '<svg viewBox="0 0 24 24" width="50" height="50" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  var ICON_BAD = '<svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#fff" stroke-width="3.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  var PITCH = 355;
 
-  async function runScan(screenId, ids, verdictFn, captionFn) {
-    const root = $('#' + screenId);
+  async function runScan(screenId, items, verdictFn, captionFn, stepDelayMs) {
+    var root = $('#' + screenId);
     if (!root) return;
-    const track = $('.scan-track', root);
-    const beam = $('.beam', root);
-    const frame = $('.verdict-frame', root);
-    const icon = $('.verdict-icon', root);
-    const cap = $('.verdict-cap', root);
-    const token = ++scanToken;
+    var track = $('.scan-track', root);
+    var beam = $('.beam', root);
+    var frame = $('.verdict-frame', root);
+    var icon = $('.verdict-icon', root);
+    var cap = $('.verdict-cap', root);
+    var token = ++scanToken;
+    var dwell = stepDelayMs || 1100;
 
     if (!track) return;
-    track.innerHTML = ids.map(id => `<div class="scan-card"><img src="${ANIMALS[id].img}" alt="${ANIMALS[id].name}"></div>`).join('');
-    const cards = $$('.scan-card', track);
+    track.innerHTML = items.map(function (it) {
+      return '<div class="scan-card"><img src="' + it.src + '" alt="' + it.displayName + '"></div>';
+    }).join('');
+    var cards = $$('.scan-card', track);
 
-    const place = cur => cards.forEach((c, k) => {
-      const rel = k - cur;
-      c.style.transform = `translateX(${rel * PITCH}px)`;
-      c.classList.toggle('hidden', rel < -1 || rel > 1);
-    });
+    var place = function (cur) {
+      cards.forEach(function (c, k) {
+        var rel = k - cur;
+        c.style.transform = 'translateX(' + (rel * PITCH) + 'px)';
+        c.classList.toggle('hidden', rel < -1 || rel > 1);
+      });
+    };
 
-    const clear = () => {
+    var clear = function () {
       if (beam) beam.className = 'beam';
       if (frame) frame.className = 'verdict-frame';
       if (icon) { icon.className = 'verdict-icon'; icon.innerHTML = ''; }
@@ -271,232 +324,329 @@
     };
 
     clear();
-    cards.forEach(c => (c.style.transition = 'none'));
+    cards.forEach(function (c) { c.style.transition = 'none'; });
     place(-1);
     void track.offsetWidth;
-    cards.forEach(c => (c.style.transition = ''));
-    await wait(350);
+    cards.forEach(function (c) { c.style.transition = ''; });
+    await wait(280);
 
-    for (let i = 0; i < ids.length; i++) {
+    for (var i = 0; i < items.length; i++) {
       if (token !== scanToken) return;
       place(i);
-      await wait(950);
+      await wait(450);
       if (token !== scanToken) return;
 
-      const ok = verdictFn(ids[i]);
+      var ok = verdictFn(items[i]);
       if (beam) beam.classList.add(ok ? 'ok' : 'bad');
-      await wait(250);
+      await wait(180);
       if (frame) frame.classList.add(ok ? 'ok' : 'bad');
       if (icon) {
         icon.classList.add(ok ? 'ok' : 'bad');
         icon.innerHTML = ok ? ICON_OK : ICON_BAD;
       }
       if (captionFn && cap) {
-        cap.textContent = captionFn(ids[i]);
+        cap.textContent = captionFn(items[i]);
         cap.classList.add('show');
       }
-      await wait(1500);
+      await wait(dwell);
       if (token !== scanToken) return;
       clear();
-      await wait(120);
+      await wait(100);
     }
 
     if (token !== scanToken) return;
-    place(ids.length);
+    place(items.length);
   }
 
-  /* ---------- Layar 4: Fauna Memeriksa Jawaban ---------- */
+  /* ---------- Layar 4: Fauna Memeriksa Contoh (hanya 50 foto contoh, bukan foto uji) ---------- */
   function initCheck() {
-    runScan('s-check', SCAN_ORDER, id => state.labels[id] === ANIMALS[id].mammal);
+    var sampleWithTruth = FD.getSampleImages(true);
+    var name = targetName();
+    runScan(
+      's-check',
+      sampleWithTruth,
+      function (it) {
+        var expected = it.classId === state.targetClassId ? 'target' : 'not_target';
+        return state.labels[it.id] === expected;
+      },
+      function (it) {
+        var lbl = state.labels[it.id] === 'target' ? 'Termasuk ' + name : 'Bukan ' + name;
+        return it.displayName + ' (Contoh ' + it.order + '): ' + lbl;
+      },
+      750
+    );
   }
 
   /* ---------- Layar 5: Rekap Data Pelabelan ---------- */
   function initRecap() {
+    updateTargetLabelsUI();
     setTab('yes');
   }
 
   function setTab(tab) {
-    $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-    const want = tab === 'yes';
-    const ids = TEACH_ORDER.filter(id => state.labels[id] === want).slice(0, 16);
-    const grid = $('#thumb-grid');
+    $$('#s-recap .tab').forEach(function (t) {
+      t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    var want = tab === 'yes' ? 'target' : 'not_target';
+    var items = SAMPLE_IMAGES.filter(function (it) {
+      return state.labels[it.id] === want;
+    });
+    var grid = $('#thumb-grid');
     if (!grid) return;
 
-    if (!ids.length) {
+    if (!items.length) {
       grid.innerHTML = '<div class="empty-msg">Belum ada contoh di kelompok ini.</div>';
       return;
     }
-    grid.innerHTML = ids.map((id, i) =>
-      `<div class="thumb" style="animation-delay:${i * 40}ms" title="${ANIMALS[id].name}"><img src="${ANIMALS[id].img}" alt="${ANIMALS[id].name}"></div>`
-    ).join('');
+    grid.innerHTML = items.map(function (it, i) {
+      return (
+        '<div class="thumb" style="animation-delay:' + Math.min(i * 20, 400) + 'ms" title="' + it.displayName + ' (Contoh ' + it.order + ')">' +
+        '<img src="' + it.src + '" alt="' + it.displayName + '">' +
+        '</div>'
+      );
+    }).join('');
   }
 
-  /* ---------- Model Simulasi Klasifikasi Fauna AI (Nearest Neighbor) ---------- */
-  function predict(testId) {
-    const f = ANIMALS[testId].f;
-    const neigh = Object.keys(state.labels)
-      .filter(id => id !== testId) // Evaluasi terhadap contoh lainnya
-      .map(id => ({
-        d: Math.hypot(...ANIMALS[id].f.map((v, i) => v - f[i])),
-        label: state.labels[id]
-      }))
-      .sort((a, b) => a.d - b.d)
-      .slice(0, 3);
+  /* ---------- Prototipe & Prediksi (Tanpa trueClass) ---------- */
+  function runBinaryPrediction() {
+    if (Object.keys(state.labels).length < SAMPLE_IMAGES.length) {
+      toast('Lengkapi semua 50 label gambar contoh terlebih dahulu.');
+      return false;
+    }
 
-    if (!neigh.length) return false;
-    let yes = 0, no = 0;
-    neigh.forEach(n => {
-      const w = 1 / (n.d + 0.1);
-      if (n.label) yes += w;
-      else no += w;
-    });
-    return yes >= no;
+    var built = FS.buildClassPrototypes(
+      SAMPLE_IMAGES,
+      state.labels,
+      ['target', 'not_target'],
+      function (id) { return FF.get(id); }
+    );
+
+    if (built.emptyClasses.length > 0) {
+      var name = targetName();
+      var missingNames = built.emptyClasses.map(function (c) {
+        return c === 'target' ? 'Termasuk ' + name : 'Bukan ' + name;
+      });
+      toast('Kelompok belum punya contoh: ' + missingNames.join(', ') + '. Perbaiki label dulu.');
+      return false;
+    }
+
+    // Prediksi pada 25 foto uji (hanya fitur uji + prototipe, tanpa trueClass)
+    var predictionsByTestId = {};
+    for (var i = 0; i < TEST_IMAGES.length; i++) {
+      var t = TEST_IMAGES[i];
+      predictionsByTestId[t.id] = FS.predictImage(t.features, built.prototypes);
+    }
+
+    // Evaluasi terpisah setelah prediksi selesai
+    var sampleWithTruth = FD.getSampleImages(true);
+    var testWithTruth = FD.getTestImages(true);
+    state.evaluation = FS.evaluateBinary(
+      sampleWithTruth,
+      state.labels,
+      testWithTruth,
+      predictionsByTestId,
+      state.targetClassId
+    );
+    return true;
   }
 
-  function computeResults() {
-    state.results = SCAN_ORDER.map(id => {
-      const guess = predict(id);
-      return { id, guess, correct: guess === ANIMALS[id].mammal };
-    });
-  }
-
-  /* ---------- Layar 6: Fauna Menebak (s-predict) ---------- */
+  /* ---------- Layar 6: Fauna Menebak 25 Foto Uji ---------- */
   function initPredict() {
-    computeResults();
-    const byId = Object.fromEntries(state.results.map(r => [r.id, r]));
-    runScan('s-predict', SCAN_ORDER, id => byId[id].correct,
-      id => 'Tebakan Fauna: ' + (byId[id].guess ? 'Mamalia' : 'Bukan Mamalia')
+    if (!runBinaryPrediction()) {
+      go('teach', { keepLabels: true });
+      return;
+    }
+
+    var name = targetName();
+    var byId = {};
+    state.evaluation.details.forEach(function (d) { byId[d.id] = d; });
+
+    runScan(
+      's-predict',
+      TEST_IMAGES,
+      function (it) { return byId[it.id].correct; },
+      function (it) {
+        var d = byId[it.id];
+        if (d.status !== 'classified') {
+          return it.displayName + ': ' + (d.message || 'Belum cukup informasi visual');
+        }
+        var labelText = d.predictedIsTarget ? 'Termasuk ' + name : 'Bukan ' + name;
+        var simText = d.similarity !== null ? ' (Kecocokan fitur: ' + Math.round(d.similarity) + '%)' : '';
+        return it.displayName + ': ' + labelText + simText;
+      },
+      1100
     );
   }
 
-  /* ---------- Layar 7: Hasil Analisis (s-results) ---------- */
-  const PER_PAGE = 5;
+  /* ---------- Layar 7: Hasil Analisis & Evaluasi Terpisah ---------- */
+  var PER_PAGE = 5;
+
+  function fmtPct(v) {
+    return v.toFixed(1).replace('.', ',').replace(',0', '') + '%';
+  }
 
   function initResults() {
-    if (!state.results.length) computeResults();
-    state.page = 0;
-    const total = state.results.length;
-    const ok = state.results.filter(r => r.correct).length;
-    const pct = (ok / total) * 100;
-
-    const sub = $('#result-sub');
-    if (sub) sub.textContent = `Fauna AI sudah menyelesaikan ${total} prediksi.`;
-
-    const sv = $('#score-value');
-    if (sv) {
-      sv.textContent = pct.toFixed(1).replace('.', ',').replace(',0', '') + '%';
-      sv.className = 'score-value ' + (pct >= 75 ? '' : pct >= 50 ? 'mid' : 'low');
+    if (!state.evaluation && !runBinaryPrediction()) {
+      go('teach', { keepLabels: true });
+      return;
     }
 
-    const cOk = $('#chip-ok');
-    const cBad = $('#chip-bad');
-    if (cOk) cOk.textContent = `${ok} Benar`;
-    if (cBad) cBad.textContent = `${total - ok} Salah`;
+    var ev = state.evaluation;
+    var name = targetName();
+    state.page = 0;
 
-    const wrongLabels = Object.keys(state.labels).filter(id => state.labels[id] !== ANIMALS[id].mammal).length;
-    const reasons = $('#reasons');
+    var sub = $('#result-sub');
+    if (sub) {
+      sub.textContent = 'Target: ' + name + ' • Diuji pada ' + ev.totalTest + ' foto baru (foto ke-3).';
+    }
+
+    var sv = $('#score-value');
+    if (sv) {
+      sv.textContent = fmtPct(ev.accuracy);
+      sv.className = 'score-value ' + (ev.accuracy >= 75 ? '' : ev.accuracy >= 50 ? 'mid' : 'low');
+    }
+
+    var sl = $('#s-results .score-label');
+    if (sl) {
+      sl.textContent = 'Akurasi Prediksi Fauna • Ketepatan Label Siswa: ' + fmtPct(ev.labelAccuracy) + ' (' + ev.correctSampleLabels + '/' + ev.totalSamples + ')';
+    }
+
+    var cOk = $('#chip-ok');
+    var cBad = $('#chip-bad');
+    if (cOk) cOk.textContent = (ev.tp + ev.tn) + ' Prediksi Benar (TP:' + ev.tp + ', TN:' + ev.tn + ')';
+    if (cBad) cBad.textContent = (ev.fp + ev.fn) + ' Salah (FP:' + ev.fp + ', FN:' + ev.fn + ')' + (ev.unclassifiedCount ? ' • ' + ev.unclassifiedCount + ' Unclassified' : '');
+
+    var reasons = $('#reasons');
     if (reasons) {
-      if (total - ok > 0) {
-        const items = [];
-        if (wrongLabels) items.push('Label data kurang tepat dari contoh yang kamu berikan');
-        items.push('Variasi karakteristik visual masih terbatas');
-        reasons.innerHTML = `<h4>Mengapa Fauna masih melakukan kesalahan?</h4><ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
-      } else {
-        reasons.innerHTML = '<h4>Mengapa Fauna bisa menebak dengan tepat?</h4><ul><li>Semua label yang kamu berikan sudah akurat</li><li>Contoh gambar mewakili ciri fisik dengan jelas</li></ul>';
-      }
+      reasons.innerHTML =
+        '<h4>Evaluasi Mode Binary (' + name + ')</h4>' +
+        '<ul>' +
+        '<li>Recall Target: <b>' + fmtPct(ev.recallTarget) + '</b> • Specificity: <b>' + fmtPct(ev.specificity) + '</b> • Balanced Accuracy: <b>' + fmtPct(ev.balancedAccuracy) + '</b></li>' +
+        '<li>Prototipe "Bukan ' + name + '" menggabungkan 4 kelas berbeda, sehingga fitur non-target saling dirata-ratakan.</li>' +
+        '</ul>';
     }
     renderPage();
   }
 
   function renderPage() {
-    const pages = Math.ceil(state.results.length / PER_PAGE);
-    const slice = state.results.slice(state.page * PER_PAGE, state.page * PER_PAGE + PER_PAGE);
-    const row = $('#result-row');
+    var ev = state.evaluation;
+    if (!ev) return;
+    var name = targetName();
+    var pages = Math.ceil(ev.details.length / PER_PAGE);
+    var slice = ev.details.slice(state.page * PER_PAGE, state.page * PER_PAGE + PER_PAGE);
+
+    var row = $('#result-row');
     if (row) {
-      row.innerHTML = slice.map(r => `
-        <div class="r-card">
-          <img src="${ANIMALS[r.id].img}" alt="${ANIMALS[r.id].name}">
-          <div class="nm">${ANIMALS[r.id].name}</div>
-          <span class="tag ${r.correct ? 'ok' : 'bad'}">${r.correct ? 'Benar' : 'Salah'}</span>
-        </div>`).join('');
+      row.innerHTML = slice.map(function (r) {
+        var predLabel = r.status !== 'classified'
+          ? 'Unclassified'
+          : (r.predictedIsTarget ? name : 'Bukan ' + name);
+        var simStr = r.similarity !== null ? ' • ' + Math.round(r.similarity) + '%' : '';
+        var tagCls = r.status !== 'classified' ? 'bad' : (r.correct ? 'ok' : 'bad');
+        var tagTxt = r.status !== 'classified' ? 'Belum Cukup Info' : (r.correct ? 'Benar' : 'Salah');
+        var warn = r.lowMargin ? ' title="Selisih jarak antar prototipe tipis"' : '';
+
+        return (
+          '<div class="r-card"' + warn + '>' +
+          '<img src="' + r.src + '" alt="' + r.displayName + '">' +
+          '<div class="nm">' + r.displayName + '</div>' +
+          '<div class="pred-meta">' + predLabel + simStr + '</div>' +
+          '<span class="tag ' + tagCls + '">' + tagTxt + '</span>' +
+          '</div>'
+        );
+      }).join('');
     }
 
-    const pager = $('#pager');
+    var pager = $('#pager');
     if (pager) {
-      const nums = Array.from({ length: pages }, (_, i) =>
-        `<button type="button" data-page="${i}" class="${i === state.page ? 'cur' : ''}">${i + 1}</button>`
-      ).join('');
+      var nums = Array.from({ length: pages }, function (_, i) {
+        return '<button type="button" data-page="' + i + '" class="' + (i === state.page ? 'cur' : '') + '">' + (i + 1) + '</button>';
+      }).join('');
       pager.innerHTML =
-        `<button type="button" class="arrow" data-dir="-1" ${state.page === 0 ? 'disabled' : ''} aria-label="Sebelumnya">‹</button>${nums}` +
-        `<button type="button" class="arrow" data-dir="1" ${state.page >= pages - 1 ? 'disabled' : ''} aria-label="Berikutnya">›</button>`;
+        '<button type="button" class="arrow" data-dir="-1" ' + (state.page === 0 ? 'disabled' : '') + ' aria-label="Sebelumnya">‹</button>' +
+        nums +
+        '<button type="button" class="arrow" data-dir="1" ' + (state.page >= pages - 1 ? 'disabled' : '') + ' aria-label="Berikutnya">›</button>';
     }
   }
 
   /* ---------- Event Handlers ---------- */
   function setupEvents() {
-    // Tombol navigasi data-go
-    document.addEventListener('click', e => {
-      const b = e.target.closest('[data-go]');
-      if (b) {
-        go(b.dataset.go);
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('#s-pick [data-go], #s-teach [data-go], #s-thanks [data-go], #s-check [data-go], #s-recap [data-go], #s-predictIntro [data-go], #s-predict [data-go], #s-results [data-go]');
+      if (!b || !state.active) return;
+      var target = b.dataset.go;
+      if (target === 'predict') {
+        if (!runBinaryPrediction()) return;
       }
+      go(target, { keepLabels: true });
     });
 
-    // Tombol Ya (Mamalia) / Tidak (Bukan Mamalia)
-    const bYes = $('#btn-yes'), bNo = $('#btn-no');
-    if (bYes) bYes.addEventListener('click', () => labelCurrent(true));
-    if (bNo)  bNo.addEventListener('click', () => labelCurrent(false));
+    var bYes = $('#btn-yes'), bNo = $('#btn-no');
+    if (bYes) bYes.addEventListener('click', function () { labelCurrent(true); });
+    if (bNo) bNo.addEventListener('click', function () { labelCurrent(false); });
 
-    // Keyboard shortcut panah kiri / kanan untuk melatih
-    document.addEventListener('keydown', e => {
-      if (currentScreen !== 'teach') return;
+    var bTeachBack = $('#btn-teach-back');
+    if (bTeachBack) {
+      bTeachBack.addEventListener('click', function () {
+        if (state.busy) return;
+        if (state.teachIndex > 0) {
+          state.teachIndex--;
+          layoutTeach();
+        } else {
+          go('pick');
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (!state.active || currentScreen !== 'teach') return;
       if (e.key === 'ArrowLeft') labelCurrent(true);
       if (e.key === 'ArrowRight') labelCurrent(false);
     });
 
-    // Tab pada layar rekap
-    $$('.tab').forEach(t => t.addEventListener('click', () => setTab(t.dataset.tab)));
+    $$('#s-recap .tab').forEach(function (t) {
+      t.addEventListener('click', function () { setTab(t.dataset.tab); });
+    });
 
-    // Pagination pada layar hasil
-    const pager = $('#pager');
+    var pager = $('#pager');
     if (pager) {
-      pager.addEventListener('click', e => {
-        const b = e.target.closest('button');
-        if (!b || b.disabled) return;
-        const pages = Math.ceil(state.results.length / PER_PAGE);
+      pager.addEventListener('click', function (e) {
+        var b = e.target.closest('button');
+        if (!b || b.disabled || !state.evaluation) return;
         if (b.dataset.page !== undefined) state.page = parseInt(b.dataset.page, 10);
         if (b.dataset.dir !== undefined) state.page += parseInt(b.dataset.dir, 10);
         renderPage();
       });
     }
 
-    // Tombol latih ulang
-    const btnRetrain = $('#btn-retrain');
+    var btnRetrain = $('#btn-retrain');
     if (btnRetrain) {
-      btnRetrain.addEventListener('click', () => go('teach'));
+      btnRetrain.addEventListener('click', function () {
+        state.teachIndex = 0;
+        go('teach', { keepLabels: true });
+      });
     }
 
-    // Hook dari Opening: ketika user memilih mode binary
-    document.addEventListener('fauna:mode', e => {
+    document.addEventListener('fauna:mode', function (e) {
       if (e.detail && e.detail.mode === 'binary') {
         state.active = true;
+        state.labels = {};
+        state.evaluation = null;
         renderRobots();
         go('pick');
       }
     });
 
-    // Reset jika keluar misi
-    document.addEventListener('fauna:exit', () => {
+    document.addEventListener('fauna:exit', function () {
       scanToken++;
       state.labels = {};
-      state.results = [];
+      state.evaluation = null;
+      state.teachIndex = 0;
       state.active = false;
       currentScreen = '';
     });
   }
 
-  // Inisialisasi awal
   setupPickGrid();
   setupEvents();
-
 })();
